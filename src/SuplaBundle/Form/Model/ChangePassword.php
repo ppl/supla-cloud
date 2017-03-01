@@ -23,62 +23,55 @@ use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 use SuplaBundle\Validator\Constraints as SuplaAssert;
 
+class ChangePassword {
 
-class ChangePassword
-{
 
-	/**
-	 * @SecurityAssert\UserPassword(
-	 *     message = "Current password is incorrect"
-	 * )
-	 */
-	protected $oldPassword;
-	
-	/**
-	 * @Assert\Length(
-	 *     min = 8, 
-	 *     minMessage="The password should be 8 or more characters."
-	 * )
-	 * @Assert\NotBlank(message="Password field cannot be left empty")
-	 */
-	protected $newPassword;
-	
-	
-	/**
+    /**
+     * @SecurityAssert\UserPassword(
+     *     message = "Current password is incorrect"
+     * )
+     */
+    protected $oldPassword;
+    
+    /**
+     * @Assert\Length(
+     *     min = 8,
+     *     minMessage="The password should be 8 or more characters."
+     * )
+     * @Assert\NotBlank(message="Password field cannot be left empty")
+     */
+    protected $newPassword;
+    
+    
+    /**
      * @Assert\Expression(
      *     "this.getNewPassword() == this.getConfirmPassword()",
      *     message="The password and its confirm are not the same"
      * )
      */
-	protected $confirmPassword;
-	
-	function getOldPassword()
-    {
-		return $this->oldPassword;
-	}
-	
-	function setOldPassword($oldPassword) 
-	{
-		$this->oldPassword = $oldPassword;
-	}
+    protected $confirmPassword;
     
-	function getNewPassword()
-	{
-		return $this->newPassword;
-	}
-	
-	function setNewPassword($newPassword)
-	{
-		$this->newPassword = $newPassword;
-	}
-	
-	function getConfirmPassword()
-	{
-		return $this->confirmPassword;
-	}
-	
-	function setConfirmPassword($confirmPassword)
-	{
-		$this->confirmPassword = $confirmPassword;
-	}
+    function getOldPassword() {
+        return $this->oldPassword;
+    }
+    
+    function setOldPassword($oldPassword) {
+        $this->oldPassword = $oldPassword;
+    }
+    
+    function getNewPassword() {
+        return $this->newPassword;
+    }
+    
+    function setNewPassword($newPassword) {
+        $this->newPassword = $newPassword;
+    }
+    
+    function getConfirmPassword() {
+        return $this->confirmPassword;
+    }
+    
+    function setConfirmPassword($confirmPassword) {
+        $this->confirmPassword = $confirmPassword;
+    }
 }

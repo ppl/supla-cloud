@@ -19,20 +19,18 @@
 
 namespace SuplaBundle\Entity;
 
-
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="supla_accessid")
  */
-class AccessID
-{
+class AccessID {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer")
@@ -77,62 +75,51 @@ class AccessID
      **/
     private $clientApps;
     
-    public function __construct(User $user = null) 
-    {
-        	
-    	$this->enabled = true;
-    	$this->clientApps = new ArrayCollection();	
-    	$this->locations = new ArrayCollection();	
-    	    	
-    	if ( $user !== null ) {
-    		$user->getAccessIDS()->add($this);
-    		$this->user = $user;
-    	}
-    		
+    public function __construct(User $user = null) {
+            
+        $this->enabled = true;
+        $this->clientApps = new ArrayCollection();
+        $this->locations = new ArrayCollection();
+                
+        if ($user !== null) {
+            $user->getAccessIDS()->add($this);
+            $this->user = $user;
+        }
     }
         
-    public function getPassword() 
-    {
-    	return $this->password;
+    public function getPassword() {
+        return $this->password;
     }
     
-    public function setPassword($password) 
-    {
-    	$this->password = $password;
+    public function setPassword($password) {
+        $this->password = $password;
     }
     
-    public function setCaption($caption) 
-    {
-    	$this->caption = $caption;
+    public function setCaption($caption) {
+        $this->caption = $caption;
     }
     
-    public function getCaption()
-    {
-    	return $this->caption;
+    public function getCaption() {
+        return $this->caption;
     }
     
-    public function getUser() 
-    {
-    	return $this->user;
+    public function getUser() {
+        return $this->user;
     }
     
-    public function getLocations() 
-    {
-    	return $this->locations;
+    public function getLocations() {
+        return $this->locations;
     }
     
-    public function getId() 
-    {
-    	return $this->id;
-    }   
+    public function getId() {
+        return $this->id;
+    }
 
-    public function getEnabled()
-    {
-    	return $this->enabled;
+    public function getEnabled() {
+        return $this->enabled;
     }
     
-    public function setEnabled($enabled)
-    {
-    	$this->enabled = $enabled;
+    public function setEnabled($enabled) {
+        $this->enabled = $enabled;
     }
 }

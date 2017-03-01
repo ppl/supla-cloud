@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  src/SuplaBundle/Form/Type/UserType.php
 
@@ -26,12 +26,11 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
-class UserType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+class UserType extends AbstractType {
+
+    public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('email', EmailType::class, array('label' => ' ',
-        		                              'required' => true));
+                                              'required' => true));
         $builder->add('plainPassword', RepeatedType::class, array(
            'required' => true,
            'first_name'  => 'password',
@@ -43,17 +42,13 @@ class UserType extends AbstractType
         ));
     }
     
-    public function configureOptions(OptionsResolver $resolver)
-    {
+    public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
             'data_class' => 'SuplaBundle\Entity\User'
         ));
     }
 
-    public function getBlockPrefix()
-    {
+    public function getBlockPrefix() {
         return '_user_type';
     }
-    
-
 }

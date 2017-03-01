@@ -5,18 +5,16 @@ use SuplaBundle\Entity\Schedule;
 use SuplaBundle\Model\SchedulePlanners\CompositeSchedulePlanner;
 use SuplaBundle\Model\SchedulePlanners\CronExpressionSchedulePlanner;
 
-class CompositeSchedulePlannerTest extends \PHPUnit_Framework_TestCase
-{
+class CompositeSchedulePlannerTest extends \PHPUnit_Framework_TestCase {
+
     /** @var CompositeSchedulePlanner */
     private $planner;
 
-    public function setUp()
-    {
+    public function setUp() {
         $this->planner = new CompositeSchedulePlanner([new CronExpressionSchedulePlanner()]);
     }
 
-    public function testCalculatingRunDatesUntil()
-    {
+    public function testCalculatingRunDatesUntil() {
         $schedule = new ScheduleWithTimezone();
         $schedule->setTimeExpression('*/5 * * * *');
         $runDates = array_map(function (\DateTime $d) {
@@ -31,8 +29,7 @@ class CompositeSchedulePlannerTest extends \PHPUnit_Framework_TestCase
         $this->assertNotContains(strtotime('2017-01-02 00:10'), $runDates);
     }
 
-    public function testCalculatingRunDatesUntilIfTheFirstOneIsLater()
-    {
+    public function testCalculatingRunDatesUntilIfTheFirstOneIsLater() {
         $schedule = new ScheduleWithTimezone();
         $schedule->setTimeExpression('23 11 5 12 * 2089');
         $runDates = array_map(function (\DateTime $d) {
@@ -42,8 +39,7 @@ class CompositeSchedulePlannerTest extends \PHPUnit_Framework_TestCase
         $this->assertContains(strtotime('2089-12-05 11:23'), $runDates);
     }
 
-    public function testCalculatingRunDatesUntilDoesNotThrowAnErrorIfNoMoreDates()
-    {
+    public function testCalculatingRunDatesUntilDoesNotThrowAnErrorIfNoMoreDates() {
         $schedule = new ScheduleWithTimezone();
         $schedule->setTimeExpression('23 11 5 12 * 2089');
         $runDates = array_map(function ($d) {
@@ -53,8 +49,7 @@ class CompositeSchedulePlannerTest extends \PHPUnit_Framework_TestCase
         $this->assertContains(strtotime('2089-12-05 11:23'), $runDates);
     }
 
-    public function testCalculatingManyDates()
-    {
+    public function testCalculatingManyDates() {
         $schedule = new ScheduleWithTimezone();
         $schedule->setTimeExpression('*/5 * * * *');
         $dates = $this->planner->calculateNextRunDatesUntil($schedule, '+5 days');

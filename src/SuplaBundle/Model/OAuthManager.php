@@ -22,7 +22,7 @@ namespace SuplaBundle\Model;
 use SuplaBundle\Entity\OAuth\User;
 use SuplaBundle\Entity\AccessID;
 
-class OAuthManager 
-{
-	
+class OAuthManager {
+
+    
 }

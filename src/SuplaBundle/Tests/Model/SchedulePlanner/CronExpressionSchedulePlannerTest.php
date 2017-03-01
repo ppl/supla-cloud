@@ -4,13 +4,12 @@ namespace SuplaBundle\Tests\Model\SchedulePlanner;
 use SuplaBundle\Entity\Schedule;
 use SuplaBundle\Model\SchedulePlanners\CronExpressionSchedulePlanner;
 
-class CronExpressionSchedulePlannerTest extends \PHPUnit_Framework_TestCase
-{
+class CronExpressionSchedulePlannerTest extends \PHPUnit_Framework_TestCase {
+
     /**
      * @dataProvider calculatingNextRunDateProvider
      */
-    public function testCalculatingNextRunDate($startDate, $cronExpression, $expectedNextRunDate)
-    {
+    public function testCalculatingNextRunDate($startDate, $cronExpression, $expectedNextRunDate) {
         $schedulePlanner = new CronExpressionSchedulePlanner();
         $schedule = new Schedule();
         $schedule->setTimeExpression($cronExpression);
@@ -21,8 +20,7 @@ class CronExpressionSchedulePlannerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedNextRunDate, $nextRunDate->format($format));
     }
 
-    public function calculatingNextRunDateProvider()
-    {
+    public function calculatingNextRunDateProvider() {
         return [
             ['2017-01-01 00:00', '23 11 5 12 * 2089', '2089-12-05 11:23'], // run once
             ['2017-01-01 00:00', '*/5 * * * *', '2017-01-01 00:05'], // every 5 minutes
@@ -37,16 +35,14 @@ class CronExpressionSchedulePlannerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider invalidCronExpressions
      */
-    public function testDoesNotSupportInvalidCronExpressions($invalidCronExpression)
-    {
+    public function testDoesNotSupportInvalidCronExpressions($invalidCronExpression) {
         $schedulePlanner = new CronExpressionSchedulePlanner();
         $schedule = new Schedule();
         $schedule->setTimeExpression($invalidCronExpression);
         $this->assertFalse($schedulePlanner->canCalculateFor($schedule));
     }
 
-    public function invalidCronExpressions()
-    {
+    public function invalidCronExpressions() {
         return [
             [null],
             [''],

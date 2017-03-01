@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  src/SuplaBundle/Form/Type/AssignType.php
 
@@ -25,35 +25,30 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class AssignType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('cancel', ButtonType::class, array(
-    			'label' => 'Cancel',
-    			'attr' => array('class' => 'overlay-close cancel'),
-    	))
-    	->add('save', SubmitType::class, array('label' => ' ',
-    			'attr' => array('class' => 'save pe-7s-check')
-    	));
-    	
-    	if ( $options['action'] != '' )
-    		$builder->setAction($options['action']);
-    	
-    } 
+class AssignType extends AbstractType {
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
+    public function buildForm(FormBuilderInterface $builder, array $options) {
+        $builder->add('cancel', ButtonType::class, array(
+                'label' => 'Cancel',
+                'attr' => array('class' => 'overlay-close cancel'),
+        ))
+        ->add('save', SubmitType::class, array('label' => ' ',
+                'attr' => array('class' => 'save pe-7s-check')
+        ));
+        
+        if ($options['action'] != '') {
+            $builder->setAction($options['action']);
+        }
+    }
+
+    public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-        	'cancel_url' => '',
-        	'action' => ''
+            'cancel_url' => '',
+            'action' => ''
         ));
     }
 
-    public function getBlockPrefix()
-    {
+    public function getBlockPrefix() {
         return '_assign_type';
     }
-    
-
 }

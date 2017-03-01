@@ -22,37 +22,31 @@ namespace SuplaBundle\Form\Model;
 use SuplaBundle\Validator\Constraints as SuplaAssert;
 use Google\RecaptchaBundle\Validator\Constraints as Recaptcha;
 
-class ForgotPassword
-{
-	/**
-	 * @SuplaAssert\UsernameExists
-	 */
+class ForgotPassword {
+
+    /**
+     * @SuplaAssert\UsernameExists
+     */
     protected $email;
     
-    /**    
+    /**
     * @Recaptcha\True
     */
     protected $recaptcha;
 
-    public function setEmail($email)
-    {
+    public function setEmail($email) {
         $this->email = $email;
     }
 
-    public function getEmail()
-    {
+    public function getEmail() {
         return $this->email;
     }
     
-    public function getRecaptcha()
-    {
-    	return $this->recaptcha;
+    public function getRecaptcha() {
+        return $this->recaptcha;
     }
     
-    public function setRecaptcha($recaptcha)
-    {
-    	$this->recaptcha = $recaptcha;
+    public function setRecaptcha($recaptcha) {
+        $this->recaptcha = $recaptcha;
     }
-    
-
 }

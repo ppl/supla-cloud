@@ -5,18 +5,16 @@ use Cron\CronExpression;
 use SensioLabs\Security\Exception\RuntimeException;
 use SuplaBundle\Entity\Schedule;
 
-class CompositeSchedulePlanner
-{
+class CompositeSchedulePlanner {
+
     /** @var SchedulePlanner[] */
     private $planners;
 
-    public function __construct(array $planners)
-    {
+    public function __construct(array $planners) {
         $this->planners = $planners;
     }
 
-    public function calculateNextRunDate(Schedule $schedule, $currentDate = 'now')
-    {
+    public function calculateNextRunDate(Schedule $schedule, $currentDate = 'now') {
         if (!($currentDate instanceof \DateTime)) {
             $currentDate = new \DateTime($currentDate, $schedule->getUserTimezone());
         }
@@ -35,8 +33,7 @@ class CompositeSchedulePlanner
      * @param int $maxCount
      * @return \DateTime[]
      */
-    public function calculateNextRunDatesUntil(Schedule $schedule, $until = '+5days', $currentDate = 'now', $maxCount = PHP_INT_MAX)
-    {
+    public function calculateNextRunDatesUntil(Schedule $schedule, $until = '+5days', $currentDate = 'now', $maxCount = PHP_INT_MAX) {
         $until = is_int($until) ? $until : strtotime($until) + 1; // +1 to make it inclusive
         $runDates = [];
         $nextRunDate = $currentDate;

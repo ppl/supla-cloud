@@ -26,28 +26,24 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Doctrine\ORM\EntityManager;
 
-class AuthHandler implements AuthenticationSuccessHandlerInterface
-{
-	
-	protected $entityManager = null;
-	protected $router = null;
-	
-	public function __construct(EntityManager $entityManager, Router $router)
-	{
-		$this->entityManager = $entityManager;
-		$this->router = $router;
-	}
+class AuthHandler implements AuthenticationSuccessHandlerInterface {
 
-	function onAuthenticationSuccess(Request $request, TokenInterface $token)
-	{
-		$user = $token->getUser();
-		$user->moveCurrentLoginToLastLogin();
-		$user->setCurrentLogin(new \DateTime());
-		$user->setCurrentIpv4($request->getClientIp());
-		$this->entityManager->flush();
-		
-		return new RedirectResponse($this->router->generate('_homepage'));
-	}
+    
+    protected $entityManager = null;
+    protected $router = null;
+    
+    public function __construct(EntityManager $entityManager, Router $router) {
+        $this->entityManager = $entityManager;
+        $this->router = $router;
+    }
+
+    function onAuthenticationSuccess(Request $request, TokenInterface $token) {
+        $user = $token->getUser();
+        $user->moveCurrentLoginToLastLogin();
+        $user->setCurrentLogin(new \DateTime());
+        $user->setCurrentIpv4($request->getClientIp());
+        $this->entityManager->flush();
+        
+        return new RedirectResponse($this->router->generate('_homepage'));
+    }
 }
-
-?>

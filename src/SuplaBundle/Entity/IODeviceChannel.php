@@ -20,7 +20,6 @@
 
 namespace SuplaBundle\Entity;
 
-
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use SuplaBundle\Validator\Constraints as SuplaAssert;
@@ -35,8 +34,10 @@ use Symfony\Component\HttpKernel\Log\LoggerInterface;
  * @ORM\Table(name="supla_dev_channel", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQUE_CHANNEL", columns={"iodevice_id","channel_number"})})
  * @SuplaAssert\Channel
  */
-class IODeviceChannel
-{    
+class IODeviceChannel {
+
+
+    
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer")
@@ -66,7 +67,7 @@ class IODeviceChannel
      * @ORM\Column(name="caption", type="string", length=100, nullable=true)
      * @Assert\Length(max=100)
      */
-    private $caption;   
+    private $caption;
 
     /**
      * @ORM\Column(name="type", type="integer", nullable=false)
@@ -76,7 +77,7 @@ class IODeviceChannel
     /**
      * @ORM\Column(name="func", type="integer", nullable=false)
      */
-    private $function; 
+    private $function;
     
     
     /**
@@ -100,94 +101,76 @@ class IODeviceChannel
      */
     private $param3;
     
-    public function getId() 
-    {
-    	return $this->id;
+    public function getId() {
+        return $this->id;
     }
     
-    public function getChannelNumber()
-    {
-    	return $this->channelNumber;
+    public function getChannelNumber() {
+        return $this->channelNumber;
     }
     
-    public function getCaption() 
-    {
-    	return $this->caption;
+    public function getCaption() {
+        return $this->caption;
     }
     
-    public function setCaption($caption)
-    {
-    	$this->caption = $caption;
+    public function setCaption($caption) {
+        $this->caption = $caption;
     }
     
-    public function getType()
-    {
-    	return $this->type;
+    public function getType() {
+        return $this->type;
     }
 
     /** @return IODevice */
-    public function getIoDevice() 
-    {
-    	return $this->iodevice;
+    public function getIoDevice() {
+        return $this->iodevice;
     }
     
-    public function getUser()
-    {
-    	return $this->user;
+    public function getUser() {
+        return $this->user;
     }
     
-    public function getFunction()
-    {
-    	return $this->function;
+    public function getFunction() {
+        return $this->function;
     }
     
-    public function setFunction($function) 
-    {
-    	$this->function = $function;
+    public function setFunction($function) {
+        $this->function = $function;
     }
     
-    public function getFuncList()
-    {
-    	return $this->funcList;
+    public function getFuncList() {
+        return $this->funcList;
     }
     
-    public function setFuncList($funcList)
-    {
-    	$this->funcList = $funcList;
+    public function setFuncList($funcList) {
+        $this->funcList = $funcList;
     }
     
-    public function getChannel() 
-    {
-    	return $this;
+    public function getChannel() {
+        return $this;
     }
     
-    public function getParam1()
-    {
-    	return $this->param1;
-    }    
-    
-    public function setParam1($param1)
-    {
-    	$this->param1 = $param1;
+    public function getParam1() {
+        return $this->param1;
     }
     
-    public function getParam2()
-    {
-    	return $this->param2;
+    public function setParam1($param1) {
+        $this->param1 = $param1;
     }
     
-    public function setParam2($param2)
-    {
-    	$this->param2 = $param2;
+    public function getParam2() {
+        return $this->param2;
     }
     
-    public function getParam3()
-    {
-    	return $this->param3;
+    public function setParam2($param2) {
+        $this->param2 = $param2;
     }
     
-    public function setParam3($param3)
-    {
-    	$this->param3 = $param3;
+    public function getParam3() {
+        return $this->param3;
+    }
+    
+    public function setParam3($param3) {
+        $this->param3 = $param3;
     }
 }

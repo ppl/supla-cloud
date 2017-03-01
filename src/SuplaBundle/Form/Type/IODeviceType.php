@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  src/SuplaBundle/Form/Type/IODeviceType.php
 
@@ -27,34 +27,29 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class IODeviceType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('comment', TextareaType::class, array('label' => 'Comment', 'required' => false))
-    	->add('enabled', CheckboxType::class, array('label' => 'Enabled', 'required' => false))
-    	->add('cancel', ButtonType::class, array(
-    			'label' => 'Cancel',
-    			'attr' => array('class' => 'btn btn-default', 'onClick' => "location.href='".$options['cancel_url']."'"),
-    	))
-    	->add('save', SubmitType::class, array('label' => 'Save',
-    			'attr' => array('class' => 'btn btn-default')
-    	));
-    }
+class IODeviceType extends AbstractType {
 
-    
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'SuplaBundle\Entity\IODevice',
-        	'cancel_url' => ''
+    public function buildForm(FormBuilderInterface $builder, array $options) {
+        $builder->add('comment', TextareaType::class, array('label' => 'Comment', 'required' => false))
+        ->add('enabled', CheckboxType::class, array('label' => 'Enabled', 'required' => false))
+        ->add('cancel', ButtonType::class, array(
+                'label' => 'Cancel',
+                'attr' => array('class' => 'btn btn-default', 'onClick' => "location.href='".$options['cancel_url']."'"),
+        ))
+        ->add('save', SubmitType::class, array('label' => 'Save',
+                'attr' => array('class' => 'btn btn-default')
         ));
     }
 
-    public function getBlockPrefix()
-    {
+    
+    public function configureOptions(OptionsResolver $resolver) {
+        $resolver->setDefaults(array(
+            'data_class' => 'SuplaBundle\Entity\IODevice',
+            'cancel_url' => ''
+        ));
+    }
+
+    public function getBlockPrefix() {
         return '_iodevice_type';
     }
-    
-
 }

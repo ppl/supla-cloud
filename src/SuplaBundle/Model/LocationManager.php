@@ -21,69 +21,59 @@ namespace SuplaBundle\Model;
 
 use SuplaBundle\Entity\Location;
 use SuplaBundle\Entity\User;
-use SuplaBundle\Entity\OAuth\User AS APIUser;
+use SuplaBundle\Entity\OAuth\User as APIUser;
 
-class LocationManager 
-{	
-	protected $translator;
-	protected $doctrine;	
-	protected $rep;
-	protected $sec;
+class LocationManager {
 
-	public function __construct($translator, $doctrine, $security_token)
-	{
-		$this->translator = $translator;
-		$this->doctrine = $doctrine;
-		$this->rep = $doctrine->getRepository('SuplaBundle:Location');
-		$this->sec = $security_token;
-	}
-	
-	public function anyLocationExists(User $user) 
-	{
-		return $this->rep->findOneBy(array('user' => $user)) !== null;
-	}
-	
-	public function totalCount(User $user) 
-	{
-		$qb = $this->rep->createQueryBuilder('l');
+    
+    protected $translator;
+    protected $doctrine;
+    protected $rep;
+    protected $sec;
 
-		return intval($qb->select('count(l.id)')
-		              ->where($qb->expr()->eq('l.user', ':user'))
-				      ->setParameter('user', $user->getId())
-		              ->getQuery()
-		              ->getSingleScalarResult());
-	}
-	
-	public function createLocation(User $user, $ifnotexists = false) 
-	{
-		if ( $ifnotexists === false
-			 || $this->anyLocationExists($user) === false ) {
-			 	
-		   $loc = new Location($user);
-		   
-		   if ( $loc !== null ) {
-		   		$loc->setPassword(bin2hex(random_bytes(2)));
-		   		$loc->setCaption($this->translator->trans('Location')." #".($this->totalCount($user)+1));
-		   		return $loc;
-		   }
+    public function __construct($translator, $doctrine, $security_token) {
+        $this->translator = $translator;
+        $this->doctrine = $doctrine;
+        $this->rep = $doctrine->getRepository('SuplaBundle:Location');
+        $this->sec = $security_token;
+    }
+    
+    public function anyLocationExists(User $user) {
+        return $this->rep->findOneBy(array('user' => $user)) !== null;
+    }
+    
+    public function totalCount(User $user) {
+        $qb = $this->rep->createQueryBuilder('l');
 
-		}
-		
-		return null;
-	}
-	
-	public function locationById($id) 
-	{
-		$user = $this->sec->getToken()->getUser();
-		
-		if ( $user === null ) 
-			return null;
-		
-		return $this->rep->findOneBy(array('user' => $user, 'id' => $id));
-	}
-	
-	
-
-
-	
+        return intval($qb->select('count(l.id)')
+                      ->where($qb->expr()->eq('l.user', ':user'))
+                      ->setParameter('user', $user->getId())
+                      ->getQuery()
+                      ->getSingleScalarResult());
+    }
+    
+    public function createLocation(User $user, $ifnotexists = false) {
+        if ($ifnotexists === false
+             || $this->anyLocationExists($user) === false ) {
+            $loc = new Location($user);
+           
+            if ($loc !== null) {
+                $loc->setPassword(bin2hex(random_bytes(2)));
+                $loc->setCaption($this->translator->trans('Location')." #".($this->totalCount($user)+1));
+                return $loc;
+            }
+        }
+        
+        return null;
+    }
+    
+    public function locationById($id) {
+        $user = $this->sec->getToken()->getUser();
+        
+        if ($user === null) {
+            return null;
+        }
+        
+        return $this->rep->findOneBy(array('user' => $user, 'id' => $id));
+    }
 }

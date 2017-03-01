@@ -26,8 +26,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="supla_oauth_access_tokens")
  */
-class AccessToken extends BaseAccessToken
-{
+class AccessToken extends BaseAccessToken {
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")

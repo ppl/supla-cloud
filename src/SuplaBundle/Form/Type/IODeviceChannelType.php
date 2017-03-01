@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  src/SuplaBundle/Form/Type/IODeviceType.php
 
@@ -27,33 +27,28 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class IODeviceChannelType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('channel', ChannelFunctionType::class, array('label' => 'Function'))        
-    	->add('caption', TextType::class, array('label' => 'Caption', 'required' => false))
-    	->add('cancel', ButtonType::class, array(
-    			'label' => ' ',
-    			'attr' => array('class' => 'back pe-7s-left-arrow', 'onClick' => "fadeToUrl('".$options['cancel_url']."')"),
-    	))
-    	->add('save', SubmitType::class, array('label' => ' ',
-    			'attr' => array('class' => 'save pe-7s-check')
-    	));
-    }
+class IODeviceChannelType extends AbstractType {
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'SuplaBundle\Entity\IODeviceChannel',
-        	'cancel_url' => ''
+    public function buildForm(FormBuilderInterface $builder, array $options) {
+        $builder->add('channel', ChannelFunctionType::class, array('label' => 'Function'))
+        ->add('caption', TextType::class, array('label' => 'Caption', 'required' => false))
+        ->add('cancel', ButtonType::class, array(
+                'label' => ' ',
+                'attr' => array('class' => 'back pe-7s-left-arrow', 'onClick' => "fadeToUrl('".$options['cancel_url']."')"),
+        ))
+        ->add('save', SubmitType::class, array('label' => ' ',
+                'attr' => array('class' => 'save pe-7s-check')
         ));
     }
 
-    public function getBlockPrefix()
-    {
+    public function configureOptions(OptionsResolver $resolver) {
+        $resolver->setDefaults(array(
+            'data_class' => 'SuplaBundle\Entity\IODeviceChannel',
+            'cancel_url' => ''
+        ));
+    }
+
+    public function getBlockPrefix() {
         return '_iodevice_channel_type';
     }
-    
-
 }

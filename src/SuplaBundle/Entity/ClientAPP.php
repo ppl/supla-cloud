@@ -19,7 +19,6 @@
 
 namespace SuplaBundle\Entity;
 
-
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,15 +31,17 @@ use Symfony\Component\HttpKernel\Log\LoggerInterface;
  * @ORM\Table(name="supla_client", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQUE_CLIENTAPP", columns={"id","guid"})})
  * @UniqueEntity(fields="id", message="ClientAPP already exists")
  */
-class ClientAPP
-{    
-	/**
-	 * @ORM\Id
-	 * @ORM\Column(name="id", type="integer")
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	private $id;
-	
+class ClientAPP {
+
+
+    
+    /**
+     * @ORM\Id
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+    
     /**
      * @ORM\Column(name="guid", type="binary", length=16, nullable=false, unique=false)
      */
@@ -92,5 +93,4 @@ class ClientAPP
      * @ORM\Column(name="protocol_version", type="integer", nullable=false)
      */
     private $protocolVersion;
-    
 }

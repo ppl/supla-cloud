@@ -19,7 +19,6 @@
 
 namespace SuplaBundle\Entity;
 
-
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,16 +32,18 @@ use SuplaBundle\Entity\IODeviceChannel;
  * @ORM\Table(name="supla_iodevice")
  * @UniqueEntity(fields="id", message="IODevice already exists")
  */
-class IODevice
-{    
-	
-	/**
-	 * @ORM\Id
-	 * @ORM\Column(name="id", type="integer")
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	private $id;
-	
+class IODevice {
+
+
+    
+    
+    /**
+     * @ORM\Id
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+    
     /**
      * @ORM\Column(name="guid", type="binary", length=16, nullable=false, unique=true)
      */
@@ -110,97 +111,80 @@ class IODevice
     private $protocolVersion;
     
     
-    public function __construct()
-    {
-    	
+    public function __construct() {
     }
     
-    public function getEnabled()
-    {
-    	return $this->enabled;
+    public function getEnabled() {
+        return $this->enabled;
     }
     
-    public function setEnabled($enabled)
-    {
-    	$this->enabled = $enabled;
+    public function setEnabled($enabled) {
+        $this->enabled = $enabled;
     }
     
-    public function getComment() 
-    {
-    	return $this->comment;
+    public function getComment() {
+        return $this->comment;
     }
     
-    public function setComment($comment) 
-    {
-    	$this->comment = $comment;
+    public function setComment($comment) {
+        $this->comment = $comment;
     }
     
-    public function getName()
-    {
-    	return $this->name;
+    public function getName() {
+        return $this->name;
     }
 
     /** @return Location */
-    public function getLocation()
-    {
-    	return $this->location;
+    public function getLocation() {
+        return $this->location;
     }
     
-    public function getRegDate()
-    {
-    	return $this->regDate;
+    public function getRegDate() {
+        return $this->regDate;
     }
     
-    public function getRegIpv4()
-    {
-    	return $this->regIpv4;
+    public function getRegIpv4() {
+        return $this->regIpv4;
     }
     
-    public function getLastConnected()
-    {
-    	return $this->lastConnected;
+    public function getLastConnected() {
+        return $this->lastConnected;
     }
     
-    public function getLastIpv4()
-    {
-    	return $this->lastIpv4;
+    public function getLastIpv4() {
+        return $this->lastIpv4;
     }
     
-    public function getId() 
-    {
-    	return $this->id;
+    public function getId() {
+        return $this->id;
     }
     
     
-    public function getGUID()
-    {
-    	$guid = $this->guid;
-    	
-    	if ( get_resource_type ( $guid ) == 'stream' ) {
-    		$guid = bin2hex(stream_get_contents ($guid, -1, 0));
-    	};
-    	
+    public function getGUID() {
+        $guid = $this->guid;
+        
+        if (get_resource_type($guid) == 'stream') {
+            $guid = bin2hex(stream_get_contents($guid, -1, 0));
+        };
+        
         return $guid;
     }
     
-    public function getGUIDString() 
-    {
-    	$guid = $this->getGUID();
+    public function getGUIDString() {
+        $guid = $this->getGUID();
     
-    	return strtoupper(substr($guid, 0, 8).'-'
-    			.substr($guid, 8, 4).'-'
-    			.substr($guid, 12, 4).'-'
-    			.substr($guid, 16, 4).'-'
-    			.substr($guid, 20, 12));
+        return strtoupper(substr($guid, 0, 8).'-'
+                .substr($guid, 8, 4).'-'
+                .substr($guid, 12, 4).'-'
+                .substr($guid, 16, 4).'-'
+                .substr($guid, 20, 12));
     }
     
-    public function getSoftwareVersion()
-    {
-    	return $this->softwareVersion;
+    public function getSoftwareVersion() {
+        return $this->softwareVersion;
     }
     
-    public function getProtocolVersion()
-    {
-    	return $this->protocolVersion;
+    public function getProtocolVersion() {
+        return $this->protocolVersion;
     }
 }

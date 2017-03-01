@@ -22,34 +22,28 @@ namespace SuplaBundle\Doctrine\Types;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
-class BinaryType extends Type
-{
-	const BINARY = 'binary';
+class BinaryType extends Type {
 
-	public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
-	{
-		return sprintf('BINARY(%d)', $fieldDeclaration['length']);
-	}
+    const BINARY = 'binary';
 
-	public function convertToPHPValue($value, AbstractPlatform $platform)
-	{
-		if ($value !== null) {
-			$value= unpack('H*', $value);
-			return array_shift($value);
-		}
-	}
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform) {
+        return sprintf('BINARY(%d)', $fieldDeclaration['length']);
+    }
 
-	public function convertToDatabaseValue($value, AbstractPlatform $platform)
-	{
-		if ($value !== null) {
-			return pack('H*', $value);
-		}
-	}
+    public function convertToPHPValue($value, AbstractPlatform $platform) {
+        if ($value !== null) {
+            $value= unpack('H*', $value);
+            return array_shift($value);
+        }
+    }
 
-	public function getName()
-	{
-		return self::BINARY;
-	}
+    public function convertToDatabaseValue($value, AbstractPlatform $platform) {
+        if ($value !== null) {
+            return pack('H*', $value);
+        }
+    }
+
+    public function getName() {
+        return self::BINARY;
+    }
 }
-
-?>

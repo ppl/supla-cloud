@@ -4,14 +4,13 @@ namespace SuplaBundle\Model\SchedulePlanners;
 use Cron\CronExpression;
 use SuplaBundle\Entity\Schedule;
 
-class SunriseSunsetSchedulePlanner implements SchedulePlanner
-{
+class SunriseSunsetSchedulePlanner implements SchedulePlanner {
+
     // SR -> SunRise, SS -> SunSet
     const SPECIFICATION_REGEX = '#^S([SR])(-?\d+)#';
 
     /** @inheritdoc */
-    public function calculateNextRunDate(Schedule $schedule, \DateTime $currentDate)
-    {
+    public function calculateNextRunDate(Schedule $schedule, \DateTime $currentDate) {
         $nextRunDate = $this->calculateNextRunDateBasedOnSun($schedule, $currentDate);
         $retries = 3; // PHP sometimes returns past sunset even if we query for midnight of the next day...
         $calculatingFromDate = $currentDate;
@@ -26,8 +25,7 @@ class SunriseSunsetSchedulePlanner implements SchedulePlanner
         return $nextRunDate;
     }
 
-    private function calculateNextRunDateBasedOnSun(Schedule $schedule, \DateTime $currentDate)
-    {
+    private function calculateNextRunDateBasedOnSun(Schedule $schedule, \DateTime $currentDate) {
         $cron = CronExpression::factory($this->getEveryMinuteCronExpression($schedule->getTimeExpression()));
         preg_match(self::SPECIFICATION_REGEX, $schedule->getTimeExpression(), $matches);
         $calculateFromDate = $currentDate;
@@ -43,16 +41,14 @@ class SunriseSunsetSchedulePlanner implements SchedulePlanner
         return $nextRunDate;
     }
 
-    private function getEveryMinuteCronExpression($sunTimeSpec)
-    {
+    private function getEveryMinuteCronExpression($sunTimeSpec) {
         $parts = explode(' ', $sunTimeSpec);
         $parts[0] = '*';
         $parts[1] = '*';
         return implode(' ', $parts);
     }
 
-    public function canCalculateFor(Schedule $schedule)
-    {
+    public function canCalculateFor(Schedule $schedule) {
         return !!preg_match(self::SPECIFICATION_REGEX, $schedule->getTimeExpression());
     }
 }

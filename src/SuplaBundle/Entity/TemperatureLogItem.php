@@ -19,7 +19,6 @@
 
 namespace SuplaBundle\Entity;
 
-
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\DateTime;
@@ -29,17 +28,19 @@ use Symfony\Component\HttpKernel\Log\LoggerInterface;
  * @ORM\Entity
  * @ORM\Table(name="supla_temperature_log", indexes={@ORM\Index(name="channel_id_idx", columns={"channel_id"}), @ORM\Index(name="date_idx", columns={"date"})})
  */
-class TemperatureLogItem
-{    
-	/**
-	 * @ORM\Id
-	 * @ORM\Column(name="id", type="integer")
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	private $id;
-	
+class TemperatureLogItem {
+
+
+    
     /**
-	 * @ORM\Column(name="channel_id", type="integer")
+     * @ORM\Id
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+    
+    /**
+     * @ORM\Column(name="channel_id", type="integer")
      * @Assert\NotBlank()
      */
     private $channel_id;
@@ -58,30 +59,24 @@ class TemperatureLogItem
     private $temperature;
     
     
-    public function __construct()
-    {	
+    public function __construct() {
     }
     
-    public function getId()
-    {
-    	return $this->id;
+    public function getId() {
+        return $this->id;
     }
     
-    public function getChannelId()
-    {
-    	return $this->channel_id;
+    public function getChannelId() {
+        return $this->channel_id;
     }
     
  
-    public function getDate() 
-    {
-    	return $this->date;
+    public function getDate() {
+        return $this->date;
     }
    
     
-    public function getTemperature()
-    {
-    	return $this->temperature;
+    public function getTemperature() {
+        return $this->temperature;
     }
-    
 }

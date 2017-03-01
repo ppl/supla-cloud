@@ -19,7 +19,6 @@
 
 namespace SuplaBundle\Entity;
 
-
 use Cron\CronExpression;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -29,8 +28,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="supla_scheduled_executions")
  */
-class ScheduledExecution
-{
+class ScheduledExecution {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer")
@@ -64,24 +63,20 @@ class ScheduledExecution
      */
     private $result;
 
-    public function __construct(Schedule $schedule, \DateTime $plannedTimestamp)
-    {
+    public function __construct(Schedule $schedule, \DateTime $plannedTimestamp) {
         $this->schedule = $schedule;
         $this->plannedTimestamp = $plannedTimestamp;
     }
 
-    public function getPlannedTimestamp()
-    {
+    public function getPlannedTimestamp() {
         return $this->plannedTimestamp;
     }
 
-    public function isFailed()
-    {
+    public function isFailed() {
         return $this->result > 0;
     }
 
-    public function getResult()
-    {
+    public function getResult() {
         return $this->result;
     }
 }

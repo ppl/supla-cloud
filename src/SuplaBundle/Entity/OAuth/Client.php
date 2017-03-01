@@ -28,8 +28,8 @@ use SuplaBundle\Entity\User as ParentUser;
  * @ORM\Entity
  * @ORM\Table(name="supla_oauth_clients")
  */
-class Client extends BaseClient
-{
+class Client extends BaseClient {
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -48,33 +48,31 @@ class Client extends BaseClient
     protected $parent;
     
     private function pwdGen() {
-    	return base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        return base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
     }
     
-    public function __construct()
-    {
-    	parent::__construct();
+    public function __construct() {
+        parent::__construct();
         $this->type = 0;
     }
         
     public function getGrantType() {
-    	return implode(', ', $this->getAllowedGrantTypes());
+        return implode(', ', $this->getAllowedGrantTypes());
     }
     
     public function setType($type) {
-    	$this->type = $type;
+        $this->type = $type;
     }
     
     public function getType() {
-    	return $this->type;
+        return $this->type;
     }
     
     public function getParentUser() {
-    	return $this->parent;
+        return $this->parent;
     }
     
     public function setParent(ParentUser $parent) {
-    	$this->parent = $parent;
+        $this->parent = $parent;
     }
-    
 }

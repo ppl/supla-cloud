@@ -3,13 +3,12 @@ namespace SuplaBundle\Tests\Model\SchedulePlanner;
 
 use SuplaBundle\Model\SchedulePlanners\SunriseSunsetSchedulePlanner;
 
-class SunriseSunsetSchedulePlannerTest extends \PHPUnit_Framework_TestCase
-{
+class SunriseSunsetSchedulePlannerTest extends \PHPUnit_Framework_TestCase {
+
     /**
      * @dataProvider calculatingNextRunDateProvider
      */
-    public function testCalculatingNextRunDate($startDate, $cronExpression, $expectedNextRunDate, $timezone = 'Europe/Warsaw')
-    {
+    public function testCalculatingNextRunDate($startDate, $cronExpression, $expectedNextRunDate, $timezone = 'Europe/Warsaw') {
         $schedulePlanner = new SunriseSunsetSchedulePlanner();
         $schedule = new ScheduleWithTimezone($cronExpression, $timezone);
         $format = 'Y-m-d H:i';
@@ -19,8 +18,7 @@ class SunriseSunsetSchedulePlannerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedNextRunDate, $nextRunDate->format($format));
     }
 
-    public function calculatingNextRunDateProvider()
-    {
+    public function calculatingNextRunDateProvider() {
         return [
             ['2017-01-01 00:00', 'SR0 * * * *', '2017-01-01 07:45'], // sunrise: 7:46, http://suncalc.net/#/52.2297,21.0122,11/2017.01.01/13:11
             ['2016-12-31 23:00', 'SR0 * * * *', '2017-01-01 07:45'], // sunrise: 7:46, http://suncalc.net/#/52.2297,21.0122,11/2017.01.01/13:11

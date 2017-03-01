@@ -19,7 +19,6 @@
 
 namespace SuplaBundle\Entity;
 
-
 use Assert\Assert;
 use Symfony\Component\Validator\Constraints;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,8 +30,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Table(name="supla_schedule")
  * @UniqueEntity(fields="id", message="IODevice already exists")
  */
-class Schedule
-{
+class Schedule {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer")
@@ -106,16 +105,14 @@ class Schedule
      */
     private $nextCalculationDate;
 
-    public function __construct(User $user = null, array $data = [])
-    {
+    public function __construct(User $user = null, array $data = []) {
         $this->user = $user;
         if (count($data)) {
             $this->fill($data);
         }
     }
 
-    public function fill(array $data)
-    {
+    public function fill(array $data) {
         Assert::that($data)->notEmptyKey('timeExpression');
         $this->setTimeExpression($data['timeExpression']);
         $this->setAction(empty($data['action']) ? null : $data['action']);
@@ -129,160 +126,139 @@ class Schedule
     /**
      * @return mixed
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
     /**
      * @return User
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->user;
     }
 
     /**
      * @return mixed
      */
-    public function getTimeExpression()
-    {
+    public function getTimeExpression() {
         return $this->timeExpression;
     }
 
     /**
      * @param mixed $timeExpression
      */
-    public function setTimeExpression($timeExpression)
-    {
+    public function setTimeExpression($timeExpression) {
         $this->timeExpression = $timeExpression;
     }
 
     /**
      * @return IODeviceChannel
      */
-    public function getChannel()
-    {
+    public function getChannel() {
         return $this->channel;
     }
 
-    public function setChannel($channel)
-    {
+    public function setChannel($channel) {
         $this->channel = $channel;
     }
 
     /**
      * @return mixed
      */
-    public function getAction()
-    {
+    public function getAction() {
         return $this->action;
     }
 
     /**
      * @param mixed $action
      */
-    public function setAction($action)
-    {
+    public function setAction($action) {
         $this->action = $action;
     }
 
     /**
      * @return mixed
      */
-    public function getActionParam()
-    {
+    public function getActionParam() {
         return $this->actionParam;
     }
 
     /**
      * @param mixed $actionParam
      */
-    public function setActionParam($actionParam)
-    {
+    public function setActionParam($actionParam) {
         $this->actionParam = $actionParam;
     }
 
     /**
      * @return mixed
      */
-    public function getMode()
-    {
+    public function getMode() {
         return $this->mode;
     }
 
     /**
      * @param mixed $mode
      */
-    public function setMode($mode)
-    {
+    public function setMode($mode) {
         $this->mode = $mode;
     }
 
     /**
      * @return mixed
      */
-    public function getDateStart()
-    {
+    public function getDateStart() {
         return $this->dateStart;
     }
 
     /**
      * @param mixed $dateStart
      */
-    public function setDateStart(\DateTime $dateStart)
-    {
+    public function setDateStart(\DateTime $dateStart) {
         $this->dateStart = $dateStart;
     }
 
     /**
      * @return mixed
      */
-    public function getDateEnd()
-    {
+    public function getDateEnd() {
         return $this->dateEnd;
     }
 
     /**
      * @param mixed $dateEnd
      */
-    public function setDateEnd($dateEnd)
-    {
+    public function setDateEnd($dateEnd) {
         $this->dateEnd = $dateEnd;
     }
 
     /**
      * @return mixed
      */
-    public function getEnabled()
-    {
+    public function getEnabled() {
         return $this->enabled;
     }
 
     /**
      * @param mixed $enabled
      */
-    public function setEnabled($enabled)
-    {
+    public function setEnabled($enabled) {
         $this->enabled = $enabled;
     }
 
     /**
      * @return mixed
      */
-    public function getNextCalculationDate()
-    {
+    public function getNextCalculationDate() {
         return $this->nextCalculationDate;
     }
 
-    public function setNextCalculationDate(\DateTime $nextCalculationDate)
-    {
+    public function setNextCalculationDate(\DateTime $nextCalculationDate) {
         $this->nextCalculationDate = $nextCalculationDate;
     }
 
     /** @return \DateTimeZone */
-    public function getUserTimezone()
-    {
+    public function getUserTimezone() {
         return new \DateTimeZone($this->getUser()->getTimezone());
     }
 }

@@ -25,41 +25,38 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class RegistrationType extends AbstractType
-{
-	
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-    	
-        $builder->add('user', UserType::class);
-        $builder->add('recaptcha', EWZRecaptchaType::class,
-        		array(  'label' => ' ', 
-        				'language' => $options['language'],
-        				'attr' => array(
-        						'options' => array(
-        								'theme' => 'clean',
-        								'type'  => 'image',
-        								'size'  => 'normal',
-        						)
-        				)
-        		));
-        $builder->add('Create', SubmitType::class, array('label' => 'Create an account',
-    			'attr' => array('class' => 'btn btn-default')
-    	));
+class RegistrationType extends AbstractType {
+
+    
+    public function buildForm(FormBuilderInterface $builder, array $options) {
         
+        $builder->add('user', UserType::class);
+        $builder->add(
+            'recaptcha',
+            EWZRecaptchaType::class,
+            array(  'label' => ' ',
+                        'language' => $options['language'],
+                        'attr' => array(
+                                'options' => array(
+                                        'theme' => 'clean',
+                                        'type'  => 'image',
+                                        'size'  => 'normal',
+                                )
+                        )
+                )
+        );
+        $builder->add('Create', SubmitType::class, array('label' => 'Create an account',
+                'attr' => array('class' => 'btn btn-default')
+        ));
     }
     
-    public function configureOptions(OptionsResolver $resolver)
-    {
-    	$resolver->setDefaults(array(
-    			'language' => 'en'
-    	));
+    public function configureOptions(OptionsResolver $resolver) {
+        $resolver->setDefaults(array(
+                'language' => 'en'
+        ));
     }
 
-    public function getBlockPrefix()
-    {
+    public function getBlockPrefix() {
         return '_user_registration_type';
     }
-    
-    
 }

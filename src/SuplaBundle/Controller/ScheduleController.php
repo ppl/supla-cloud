@@ -19,7 +19,6 @@
 
 namespace SuplaBundle\Controller;
 
-
 use Assert\Assert;
 use Assert\Assertion;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -34,14 +33,13 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @Route("/schedule")
  */
-class ScheduleController extends Controller
-{
+class ScheduleController extends Controller {
+
     /**
      * @Route("/", name="_schedule_list")
      * @Template
      */
-    public function scheduleListAction()
-    {
+    public function scheduleListAction() {
         return [];
     }
 
@@ -49,8 +47,7 @@ class ScheduleController extends Controller
      * @Route("/new", name="_schedule_new")
      * @Template("@Supla/Schedule/scheduleForm.html.twig")
      */
-    public function newScheduleAction()
-    {
+    public function newScheduleAction() {
         return [];
     }
 
@@ -59,8 +56,7 @@ class ScheduleController extends Controller
      * @Template("@Supla/Schedule/scheduleForm.html.twig")
      * @Security("user == schedule.getUser()")
      */
-    public function scheduleEditAction(Schedule $schedule)
-    {
+    public function scheduleEditAction(Schedule $schedule) {
         return ['schedule' => $schedule];
     }
 
@@ -68,8 +64,7 @@ class ScheduleController extends Controller
      * @Route("/create")
      * @Method("POST")
      */
-    public function createScheduleAction(Request $request)
-    {
+    public function createScheduleAction(Request $request) {
         Assertion::false($this->getUser()->isLimitScheduleExceeded(), 'Schedule limit has been exceeded');
         $data = $request->request->all();
         $schedule = $this->fillSchedule(new Schedule($this->getUser()), $data);
@@ -82,8 +77,7 @@ class ScheduleController extends Controller
     /**
      * @Route("/next-run-dates", name="_schedule_get_run_dates", requirements={"timeExpression"=".+"})
      */
-    public function getNextRunDatesAction(Request $request)
-    {
+    public function getNextRunDatesAction(Request $request) {
         Assertion::true($request->isXmlHttpRequest());
         $data = $request->request->all();
         $temporarySchedule = new Schedule($this->getUser(), $data);
@@ -99,8 +93,7 @@ class ScheduleController extends Controller
      * @Route("/{schedule}")
      * @Method("PUT")
      */
-    public function editScheduleAction(Schedule $schedule, Request $request)
-    {
+    public function editScheduleAction(Schedule $schedule, Request $request) {
         $data = $request->request->all();
         $this->fillSchedule($schedule, $data);
         return $this->getDoctrine()->getManager()->transactional(function ($em) use ($schedule) {
@@ -112,8 +105,7 @@ class ScheduleController extends Controller
     }
 
     /** @return Schedule */
-    private function fillSchedule(Schedule $schedule, array $data)
-    {
+    private function fillSchedule(Schedule $schedule, array $data) {
         Assert::that($data)
             ->notEmptyKey('channel')
             ->notEmptyKey('action')
@@ -134,15 +126,14 @@ class ScheduleController extends Controller
      * @Route("/{schedule}", name="_schedule_details")
      * @Security("user == schedule.getUser()")
      */
-    public function scheduleDetailsAction(Schedule $schedule, Request $request)
-    {
+    public function scheduleDetailsAction(Schedule $schedule, Request $request) {
         if ($request->isMethod('POST')) {
             $data = $request->request->all();
             if (isset($data['disable'])) {
                 $this->get('schedule_manager')->disable($schedule);
-            } else if (isset($data['enable'])) {
+            } elseif (isset($data['enable'])) {
                 $this->get('schedule_manager')->enable($schedule);
-            } else if (isset($data['delete'])) {
+            } elseif (isset($data['delete'])) {
                 $this->get('schedule_manager')->delete($schedule);
                 $this->get('session')->getFlashBag()->add('success', array('title' => 'Success', 'message' => 'Schedule has been deleted'));
                 return $this->redirectToRoute("_schedule_list");

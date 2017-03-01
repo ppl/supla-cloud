@@ -19,7 +19,6 @@
 
 namespace SuplaBundle\Entity;
 
-
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\DateTime;
@@ -30,8 +29,8 @@ use SuplaBundle\Entity\User;
  * @ORM\Entity
  * @ORM\Table(name="supla_location")
  */
-class Location
-{
+class Location {
+
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer")
@@ -79,72 +78,63 @@ class Location
     private $ioDevices;
     
     public function __construct(User $user) {
-    	
-    	$this->enabled = true;
-    	$this->accessIds = new ArrayCollection();
-    	$this->ioDevices = new ArrayCollection();
-    	
-    	if ( $user !== null ) {
-    		
-    	   $this->user = $user;
-    	   
-    	   if ( $user->getAccessIDS()->count() > 0 ) {
-    	   	
-    	   	  $aid = $user->getAccessIDS()->get(0);
-    	   	  
-    	   	  if ( $aid !== null ) {
-    	   	  	$this->accessIds->add($aid);
-    	   	  	$aid->getLocations()->add($this);
-    	   	  	$user->getLocations()->add($this);
-    	   	  }
-    	   	  	
-    	   }
-    	   
-    	}
+        
+        $this->enabled = true;
+        $this->accessIds = new ArrayCollection();
+        $this->ioDevices = new ArrayCollection();
+        
+        if ($user !== null) {
+            $this->user = $user;
+           
+            if ($user->getAccessIDS()->count() > 0) {
+                $aid = $user->getAccessIDS()->get(0);
+              
+                if ($aid !== null) {
+                    $this->accessIds->add($aid);
+                    $aid->getLocations()->add($this);
+                    $user->getLocations()->add($this);
+                }
+            }
+        }
     }
     
     public function getCaption() {
-    	return $this->caption;
+        return $this->caption;
     }
     
     public function setCaption($caption) {
-    	$this->caption = $caption;
+        $this->caption = $caption;
     }
     
     public function getPassword() {
-    	return $this->password;
+        return $this->password;
     }
     
     public function setPassword($password) {
-    	$this->password = $password;
+        $this->password = $password;
     }
     
     public function getUser() {
-    	return $this->user;
+        return $this->user;
     }
     
     public function getId() {
-    	return $this->id;
+        return $this->id;
     }
     
-    public function getIoDevices() 
-    {
-    	return $this->ioDevices;
+    public function getIoDevices() {
+        return $this->ioDevices;
     }
     
-    public function getAccessIds() 
-    {
-    	return $this->accessIds;
+    public function getAccessIds() {
+        return $this->accessIds;
     }
     
-    public function getEnabled()
-    {
-    	return $this->enabled;
+    public function getEnabled() {
+        return $this->enabled;
     }
     
-    public function setEnabled($enabled)
-    {
-    	$this->enabled = $enabled;
+    public function setEnabled($enabled) {
+        $this->enabled = $enabled;
     }
-    
 }

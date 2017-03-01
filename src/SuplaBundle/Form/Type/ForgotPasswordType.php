@@ -26,38 +26,36 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class ForgotPasswordType extends AbstractType
-{
-	
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-    	
-        $builder->add('email', TextType::class, array('label' => 'Email', 'required' => true));
-        $builder->add('recaptcha', EWZRecaptchaType::class,
-        		array(
-        				'attr' => array(
-        						'options' => array(
-        								'theme' => 'clean'
-        						)
-        				)
-        		));
-        $builder->add('Submit', SubmitType::class, array('label' => 'Submit',
-    			'attr' => array('class' => 'btn btn-default')
-    	));
+class ForgotPasswordType extends AbstractType {
+
+    
+    public function buildForm(FormBuilderInterface $builder, array $options) {
         
+        $builder->add('email', TextType::class, array('label' => 'Email', 'required' => true));
+        $builder->add(
+            'recaptcha',
+            EWZRecaptchaType::class,
+            array(
+                        'attr' => array(
+                                'options' => array(
+                                        'theme' => 'clean'
+                                )
+                        )
+                )
+        );
+        $builder->add('Submit', SubmitType::class, array('label' => 'Submit',
+                'attr' => array('class' => 'btn btn-default')
+        ));
     }
     
   
-    public function configureOptions(OptionsResolver $resolver)
-    {
-    	$resolver->setDefaults(array(
-    			'data_class' => 'SuplaBundle\Form\Model\ForgotPassword',
-    	));
+    public function configureOptions(OptionsResolver $resolver) {
+        $resolver->setDefaults(array(
+                'data_class' => 'SuplaBundle\Form\Model\ForgotPassword',
+        ));
     }
     
-    public function getBlockPrefix()
-    {
+    public function getBlockPrefix() {
         return '_forgot_password_type';
     }
-    
 }

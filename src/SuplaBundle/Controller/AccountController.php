@@ -45,14 +45,13 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 /**
  * @Route("/account")
  */
-class AccountController extends Controller
-{
+class AccountController extends Controller {
+
 
     /**
      * @Route("/register", name="_account_register")
      */
-    public function registerAction(Request $request)
-    {
+    public function registerAction(Request $request) {
         $registration = new Registration();
         $form = $this->createForm(RegistrationType::class, $registration, array(
             'action' => $this->generateUrl('_account_create_here'),
@@ -70,49 +69,43 @@ class AccountController extends Controller
     /**
      * @Route("/checkemail", name="_account_checkemail")
      */
-    public function checkEmailAction()
-    {
+    public function checkEmailAction() {
         $email = $this->container->get('session')->get('_registration_email');
         $this->container->get('session')->remove('_registration_email');
 
-        if ($email === null)
+        if ($email === null) {
             return $this->redirectToRoute("_auth_login");
+        }
 
         return $this->render(
             'SuplaBundle:Account:checkemail.html.twig',
             array('email' => $email)
         );
-
     }
 
     /**
      * @Route("/confirmemail/{token}", name="_account_confirmemail")
      */
-    public function confirmEmailAction($token)
-    {
+    public function confirmEmailAction($token) {
         $user_manager = $this->get('user_manager');
 
         if (($user = $user_manager->Confirm($token)) !== null) {
-
             $mailer = $this->get('supla_mailer');
             $mailer->sendActivationEmailMessage($user);
 
             $this->get('session')->getFlashBag()->add('success', array('title' => 'Success', 'message' => 'Account has been activated. You can Sign In now.'));
-
         } else {
             $this->get('session')->getFlashBag()->add('error', array('title' => 'Error', 'message' => 'Token does not exist'));
         }
 
         return $this->redirectToRoute("_auth_login");
-
     }
 
 
     /**
      * @Route("/create_here", name="_account_create_here")
      */
-    public function createActionHere(Request $request)
-    {
+    public function createActionHere(Request $request) {
 
         $form = $this->createForm(RegistrationType::class, new Registration(), array('language' => $request->getLocale()));
 
@@ -121,7 +114,6 @@ class AccountController extends Controller
         $sl = $this->get('server_list');
 
         if ($form->isValid()) {
-
             $username = $form->getData()->getUser()->getUsername();
 
             for ($n = 0; $n < 4; $n++) {
@@ -133,16 +125,14 @@ class AccountController extends Controller
                     break;
                 }
             }
-
-
         } else {
             $exists = false;
         }
 
 
-        if ($exists === NULL) {
+        if ($exists === null) {
             return $this->redirectToRoute("_temp_unavailable");
-        } else if ($exists === true) {
+        } elseif ($exists === true) {
             $translator = $this->get('translator');
             $form->get('user')->get('email')->addError(new FormError($translator->trans('Email already exists', array(), 'validators')));
         }
@@ -150,7 +140,6 @@ class AccountController extends Controller
         if ($exists === false
             && $form->isValid()
         ) {
-
             $registration = $form->getData();
             $user_manager = $this->get('user_manager');
             $user = $registration->getUser();
@@ -176,8 +165,7 @@ class AccountController extends Controller
     /**
      * @Route("/create_here/{locale}", name="_account_create_here_lc")
      */
-    public function createActionHereLC(Request $request, $locale)
-    {
+    public function createActionHereLC(Request $request, $locale) {
         if (in_array(@$locale, array('en', 'pl', 'de', 'ru'))) {
             $request->getSession()->set('_locale', $locale);
             $request->setLocale($locale);
@@ -189,8 +177,7 @@ class AccountController extends Controller
     /**
      * @Route("/create", name="_account_create")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $sl = $this->get('server_list');
         return $this->redirect($sl->getCreateAccountUrl($request));
     }
@@ -198,11 +185,11 @@ class AccountController extends Controller
     /**
      * @Route("/view", name="_account_view")
      */
-    public function viewAction()
-    {
+    public function viewAction() {
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
-        return $this->render('SuplaBundle:Account:view.html.twig',
+        return $this->render(
+            'SuplaBundle:Account:view.html.twig',
             array('user' => $user
             )
         );
@@ -211,19 +198,18 @@ class AccountController extends Controller
     /**
      * @Route("/reset_passwd/{token}", name="_account_reset_passwd")
      */
-    public function resetPasswordAction(Request $request, $token)
-    {
+    public function resetPasswordAction(Request $request, $token) {
         $user_manager = $this->get('user_manager');
 
         if (($user = $user_manager->userByPasswordToken($token)) !== null) {
-
-            $form = $this->createForm(ResetPasswordType::class,
-                new ResetPassword());
+            $form = $this->createForm(
+                ResetPasswordType::class,
+                new ResetPassword()
+            );
 
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-
                 $user->setToken(null);
                 $user->setPasswordRequestedAt(null);
                 $user_manager->setPassword($form->getData()->getNewPassword(), $user, true);
@@ -232,10 +218,11 @@ class AccountController extends Controller
                 return $this->redirectToRoute("_auth_login");
             }
 
-            return $this->render('SuplaBundle:Account:resetpassword.html.twig',
+            return $this->render(
+                'SuplaBundle:Account:resetpassword.html.twig',
                 array('form' => $form->createView(),
-                ));
-
+                )
+            );
         } else {
             $this->get('session')->getFlashBag()->add('error', array('title' => 'Error', 'message' => 'Token does not exist'));
         }
@@ -246,11 +233,11 @@ class AccountController extends Controller
     /**
      * @Route("/api", name="_account_api")
      */
-    public function apiSettingsAction()
-    {
+    public function apiSettingsAction() {
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
-        return $this->render('SuplaBundle:Account:api.html.twig',
+        return $this->render(
+            'SuplaBundle:Account:api.html.twig',
             array('user' => $user
             )
         );
@@ -259,8 +246,7 @@ class AccountController extends Controller
     /**
      * @Route("/ajax/changepassword", name="_account_ajax_changepassword")
      */
-    public function ajaxChangePassword(Request $request)
-    {
+    public function ajaxChangePassword(Request $request) {
         $data = json_decode($request->getContent());
         $translator = $this->get('translator');
         $validator = $this->get('validator');
@@ -273,7 +259,6 @@ class AccountController extends Controller
         $errors = $validator->validate($cp);
 
         if (count($errors) > 0) {
-
             $result = array('flash' => array('title' => $translator->trans('Error'),
                 'message' => $translator->trans($errors[0]->getMessage()),
                 'type' => 'error')
@@ -288,14 +273,12 @@ class AccountController extends Controller
         $this->get('user_manager')->setPassword($data->new_password, $user, false);
 
         return AjaxController::itemEdit($validator, $translator, $this->get('doctrine'), $user, 'Password has been changed!', '');
-
     }
 
     /**
      * @Route("/ajax/forgot_passwd_here", name="_account_ajax_forgot_passwd_here")
      */
-    public function forgotPasswordHereAction(Request $request)
-    {
+    public function forgotPasswordHereAction(Request $request) {
         $translator = $this->get('translator');
         $user_manager = $this->get('user_manager');
 
@@ -311,52 +294,44 @@ class AccountController extends Controller
             && null !== ($user = $user = $user_manager->userByEmail($data->email))
             && $user_manager->paswordRequest($user) === true
         ) {
-
             $mailer = $this->get('supla_mailer');
             $mailer->sendResetPasswordEmailMessage($user);
         }
 
 
         return AjaxController::jsonResponse(true, null);
-
-
     }
 
     /**
      * @Route("/ajax/forgot_passwd", name="_account_ajax_forgot_passwd")
      */
-    public function forgotPasswordAction(Request $request)
-    {
+    public function forgotPasswordAction(Request $request) {
         $data = json_decode($request->getContent());
         $username = @$data->email;
 
         if (preg_match('/@/', $username)) {
-
             $sl = $this->get('server_list');
             $server = $sl->getAuthServerForUser($request, $username);
 
 
-            if (strlen(@$server) > 0)
+            if (strlen(@$server) > 0) {
                 AjaxController::remoteRequest('https://' . $server . $this->generateUrl('_account_ajax_forgot_passwd_here'), array('email' => $username, 'locale' => $request->getLocale()));
-
+            }
         }
 
         return AjaxController::jsonResponse(true, null);
-
     }
 
 
     /**
      * @Route("/ajax/user_exists", name="_account_ajax_user_exists")
      */
-    public function userExists(Request $request)
-    {
-        $exists = NULL;
+    public function userExists(Request $request) {
+        $exists = null;
 
         $sl = $this->get('server_list');
 
         if ($sl->requestAllowed()) {
-
             $data = json_decode($request->getContent());
             $user_manager = $this->get('user_manager');
             $user = $user_manager->userByEmail(@$data->username);
@@ -365,15 +340,13 @@ class AccountController extends Controller
         };
 
         return AjaxController::jsonResponse($exists !== null, array('exists' => $exists));
-
     }
 
     /**
      * @Route("/user-timezone")
      * @Method("PUT")
      */
-    public function updateUserTimezoneAction(Request $request)
-    {
+    public function updateUserTimezoneAction(Request $request) {
         $data = $request->request->all();
         try {
             $timezone = new \DateTimeZone($data['timezone']);
@@ -389,8 +362,7 @@ class AccountController extends Controller
      * @Route("/schedulable-channels")
      * @Method("GET")
      */
-    public function getSchedulableChannels()
-    {
+    public function getSchedulableChannels() {
         $ioDeviceManager = $this->get('iodevice_manager');
         $schedulableChannels = $this->get('schedule_manager')->getSchedulableChannels($this->getUser());
         $channelToFunctionsMap = [];

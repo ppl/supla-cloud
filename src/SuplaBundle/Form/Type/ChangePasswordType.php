@@ -27,11 +27,10 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 
-class ChangePasswordType extends AbstractType
-{
-	
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+class ChangePasswordType extends AbstractType {
+
+    
+    public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('oldPassword', PasswordType::class);
         $builder->add('newPassword', RepeatedType::class, array(
             'type' => PasswordType::class,
@@ -42,25 +41,22 @@ class ChangePasswordType extends AbstractType
         ));
         
         $builder->add('cancel', ButtonType::class, array(
-        		'label' => 'Cancel',
-        		'attr' => array('class' => 'btn btn-default', 'onClick' => "location.href='".$options['cancel_url']."'"),
+                'label' => 'Cancel',
+                'attr' => array('class' => 'btn btn-default', 'onClick' => "location.href='".$options['cancel_url']."'"),
         ))
         ->add('save', SubmitType::class, array('label' => 'Save',
-        		'attr' => array('class' => 'btn btn-default')
+                'attr' => array('class' => 'btn btn-default')
         ));
     }
     
-    public function configureOptions(OptionsResolver $resolver)
-    {
+    public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
             'data_class' => 'SuplaBundle\Form\Model\ChangePassword',
-        	'cancel_url' => '',
+            'cancel_url' => '',
         ));
     }
     
-    public function getBlockPrefix()
-    {
+    public function getBlockPrefix() {
         return '_change_password_type';
     }
-    
 }

@@ -24,19 +24,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ResetPassword {
 
-
-    
     /**
      * @Assert\Length(
      *     min = 8,
      * )
      */
     protected $newPassword;
-        
+
     function getNewPassword() {
         return $this->newPassword;
     }
-    
+
     function setNewPassword($newPassword) {
         $this->newPassword = $newPassword;
     }

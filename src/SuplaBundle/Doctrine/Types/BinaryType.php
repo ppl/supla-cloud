@@ -19,8 +19,8 @@
 
 namespace SuplaBundle\Doctrine\Types;
 
-use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\Type;
 
 class BinaryType extends Type {
 
@@ -32,7 +32,7 @@ class BinaryType extends Type {
 
     public function convertToPHPValue($value, AbstractPlatform $platform) {
         if ($value !== null) {
-            $value= unpack('H*', $value);
+            $value = unpack('H*', $value);
             return array_shift($value);
         }
     }

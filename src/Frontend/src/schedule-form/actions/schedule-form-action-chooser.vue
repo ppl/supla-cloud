@@ -2,9 +2,12 @@
     <div>
         <div class="form-group">
             <label>{{ $t('Subject') }}</label>
-            <select class="form-control" ref="channelsDropdown" :data-placeholder="$t('choose the channel')"
-                    v-model="channel">
-                <option v-for="channel in userChannels" :value="channel.id">
+            <select class="form-control"
+                ref="channelsDropdown"
+                :data-placeholder="$t('choose the channel')"
+                v-model="channel">
+                <option v-for="channel in userChannels"
+                    :value="channel.id">
                     {{ channelTitle(channel) }}
                 </option>
             </select>
@@ -13,15 +16,25 @@
             <div v-for="possibleAction in channelFunctionMap[channel]">
                 <div class="radio">
                     <label>
-                        <input type="radio" :value="possibleAction" v-model="action">
+                        <input type="radio"
+                            :value="possibleAction"
+                            v-model="action">
                         {{ $t(actionStringMap[possibleAction]) }}
                     </label>
-                    <span class="input-group" v-if="possibleAction == 70" v-show="action == possibleAction">
-                        <input type="number" min="0" max="100" step="5" class="form-control"
-                               maxlength="3" v-model="actionParam">
+                    <span class="input-group"
+                        v-if="possibleAction == 70"
+                        v-show="action == possibleAction">
+                        <input type="number"
+                            min="0"
+                            max="100"
+                            step="5"
+                            class="form-control"
+                            maxlength="3"
+                            v-model="actionParam">
                         <span class="input-group-addon">%</span>
                     </span>
-                    <span class="input-group" v-if="possibleAction == 80 && action == possibleAction">
+                    <span class="input-group"
+                        v-if="possibleAction == 80 && action == possibleAction">
                         <hue-colorpicker v-model="actionParam"></hue-colorpicker>
                     </span>
                 </div>

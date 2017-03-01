@@ -18,9 +18,9 @@ class IoDeviceAttributesToStringExtension extends \Twig_Extension {
 
     public function getFilters() {
         return [
-            new \Twig_SimpleFilter('channelFunctionToString', array($this, 'channelFunctionToString')),
-            new \Twig_SimpleFilter('functionActionToString', array($this, 'functionActionToString')),
-            new \Twig_SimpleFilter('actionExecutionResultToString', array($this, 'actionExecutionResultToString')),
+            new \Twig_SimpleFilter('channelFunctionToString', [$this, 'channelFunctionToString']),
+            new \Twig_SimpleFilter('functionActionToString', [$this, 'functionActionToString']),
+            new \Twig_SimpleFilter('actionExecutionResultToString', [$this, 'actionExecutionResultToString']),
         ];
     }
 

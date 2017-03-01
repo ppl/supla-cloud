@@ -19,19 +19,18 @@
 
 namespace SuplaBundle\Handler;
 
-use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Doctrine\ORM\EntityManager;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 
 class AuthHandler implements AuthenticationSuccessHandlerInterface {
 
-    
     protected $entityManager = null;
     protected $router = null;
-    
+
     public function __construct(EntityManager $entityManager, Router $router) {
         $this->entityManager = $entityManager;
         $this->router = $router;
@@ -43,7 +42,7 @@ class AuthHandler implements AuthenticationSuccessHandlerInterface {
         $user->setCurrentLogin(new \DateTime());
         $user->setCurrentIpv4($request->getClientIp());
         $this->entityManager->flush();
-        
+
         return new RedirectResponse($this->router->generate('_homepage'));
     }
 }

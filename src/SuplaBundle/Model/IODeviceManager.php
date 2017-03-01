@@ -19,23 +19,20 @@
 
 namespace SuplaBundle\Model;
 
-use SuplaBundle\Supla\SuplaConst;
 use SuplaBundle\Entity\IODevice;
 use SuplaBundle\Entity\IODeviceChannel;
 use SuplaBundle\Entity\User;
-use SuplaBundle\Entity\OAuth\User as APIUser;
+use SuplaBundle\Supla\SuplaConst;
 use ZipArchive;
 
 class IODeviceManager {
 
-    
     protected $translator;
     protected $doctrine;
     protected $dev_rep;
     protected $channel_rep;
     protected $sec;
     protected $template;
-        
 
     public function __construct($translator, $doctrine, $security_token, $template) {
         $this->translator = $translator;
@@ -45,110 +42,111 @@ class IODeviceManager {
         $this->sec = $security_token;
         $this->template = $template;
     }
-    
+
     public function channelFunctionMap($type = null, $flist = null) {
-        $map[SuplaConst::TYPE_SENSORNO] = array('0', SuplaConst::FNC_OPENINGSENSOR_GATEWAY,
-                                                     SuplaConst::FNC_OPENINGSENSOR_GATE,
-                                                     SuplaConst::FNC_OPENINGSENSOR_GARAGEDOOR,
-                                                     SuplaConst::FNC_OPENINGSENSOR_DOOR,
-                                                     SuplaConst::FNC_NOLIQUIDSENSOR,
-                                                     SuplaConst::FNC_OPENINGSENSOR_ROLLERSHUTTER
-        );
-        
+        $map[SuplaConst::TYPE_SENSORNO] = ['0', SuplaConst::FNC_OPENINGSENSOR_GATEWAY,
+            SuplaConst::FNC_OPENINGSENSOR_GATE,
+            SuplaConst::FNC_OPENINGSENSOR_GARAGEDOOR,
+            SuplaConst::FNC_OPENINGSENSOR_DOOR,
+            SuplaConst::FNC_NOLIQUIDSENSOR,
+            SuplaConst::FNC_OPENINGSENSOR_ROLLERSHUTTER,
+        ];
+
         $map[SuplaConst::TYPE_SENSORNC] = $map[SuplaConst::TYPE_SENSORNO];
-        
-        $map[SuplaConst::TYPE_RELAYHFD4] = array('0', SuplaConst::FNC_CONTROLLINGTHEGATEWAYLOCK,
-                                                      SuplaConst::FNC_CONTROLLINGTHEGATE,
-                                                      SuplaConst::FNC_CONTROLLINGTHEGARAGEDOOR,
-                                                      SuplaConst::FNC_CONTROLLINGTHEDOORLOCK
-        );
-        
-        $map[SuplaConst::TYPE_RELAYG5LA1A] = array('0', SuplaConst::FNC_CONTROLLINGTHEGATEWAYLOCK,
-                SuplaConst::FNC_CONTROLLINGTHEGATE,
-                SuplaConst::FNC_CONTROLLINGTHEGARAGEDOOR,
-                SuplaConst::FNC_CONTROLLINGTHEDOORLOCK,
-                SuplaConst::FNC_POWERSWITCH,
-                SuplaConst::FNC_LIGHTSWITCH
-        );
-        
-        $map[SuplaConst::TYPE_2XRELAYG5LA1A] = array('0', SuplaConst::FNC_CONTROLLINGTHEGATEWAYLOCK,
-                SuplaConst::FNC_CONTROLLINGTHEGATE,
-                SuplaConst::FNC_CONTROLLINGTHEGARAGEDOOR,
-                SuplaConst::FNC_CONTROLLINGTHEDOORLOCK,
-                SuplaConst::FNC_POWERSWITCH,
-                SuplaConst::FNC_LIGHTSWITCH,
-                SuplaConst::FNC_CONTROLLINGTHEROLLERSHUTTER
-        );
-        
-        $map[SuplaConst::TYPE_THERMOMETERDS18B20] = array('0', SuplaConst::FNC_THERMOMETER);
-        
-        $map[SuplaConst::TYPE_DHT11] = array('0', SuplaConst::FNC_HUMIDITYANDTEMPERATURE);
-        
+
+        $map[SuplaConst::TYPE_RELAYHFD4] = ['0', SuplaConst::FNC_CONTROLLINGTHEGATEWAYLOCK,
+            SuplaConst::FNC_CONTROLLINGTHEGATE,
+            SuplaConst::FNC_CONTROLLINGTHEGARAGEDOOR,
+            SuplaConst::FNC_CONTROLLINGTHEDOORLOCK,
+        ];
+
+        $map[SuplaConst::TYPE_RELAYG5LA1A] = ['0', SuplaConst::FNC_CONTROLLINGTHEGATEWAYLOCK,
+            SuplaConst::FNC_CONTROLLINGTHEGATE,
+            SuplaConst::FNC_CONTROLLINGTHEGARAGEDOOR,
+            SuplaConst::FNC_CONTROLLINGTHEDOORLOCK,
+            SuplaConst::FNC_POWERSWITCH,
+            SuplaConst::FNC_LIGHTSWITCH,
+        ];
+
+        $map[SuplaConst::TYPE_2XRELAYG5LA1A] = ['0', SuplaConst::FNC_CONTROLLINGTHEGATEWAYLOCK,
+            SuplaConst::FNC_CONTROLLINGTHEGATE,
+            SuplaConst::FNC_CONTROLLINGTHEGARAGEDOOR,
+            SuplaConst::FNC_CONTROLLINGTHEDOORLOCK,
+            SuplaConst::FNC_POWERSWITCH,
+            SuplaConst::FNC_LIGHTSWITCH,
+            SuplaConst::FNC_CONTROLLINGTHEROLLERSHUTTER,
+        ];
+
+        $map[SuplaConst::TYPE_THERMOMETERDS18B20] = ['0', SuplaConst::FNC_THERMOMETER];
+
+        $map[SuplaConst::TYPE_DHT11] = ['0', SuplaConst::FNC_HUMIDITYANDTEMPERATURE];
+
         $map[SuplaConst::TYPE_DHT21] = $map[SuplaConst::TYPE_DHT11];
-        
+
         $map[SuplaConst::TYPE_DHT22] = $map[SuplaConst::TYPE_DHT11];
-        
+
         $map[SuplaConst::TYPE_AM2301] = $map[SuplaConst::TYPE_DHT11];
-        
+
         $map[SuplaConst::TYPE_AM2302] = $map[SuplaConst::TYPE_DHT11];
-        
-        $map[SuplaConst::TYPE_DIMMER] = array('0', SuplaConst::FNC_DIMMER);
-        
-        $map[SuplaConst::TYPE_RGBLEDCONTROLLER] = array('0', SuplaConst::FNC_RGBLIGHTING);
-        
-        $map[SuplaConst::TYPE_DIMMERANDRGBLED] = array('0', SuplaConst::FNC_DIMMERANDRGBLIGHTING);
-        
-        $map[SuplaConst::TYPE_DISTANCESENSOR] = array('0', SuplaConst::FNC_DEPTHSENSOR,
-                SuplaConst::FNC_DISTANCESENSOR,
-        );
-        
+
+        $map[SuplaConst::TYPE_DIMMER] = ['0', SuplaConst::FNC_DIMMER];
+
+        $map[SuplaConst::TYPE_RGBLEDCONTROLLER] = ['0', SuplaConst::FNC_RGBLIGHTING];
+
+        $map[SuplaConst::TYPE_DIMMERANDRGBLED] = ['0', SuplaConst::FNC_DIMMERANDRGBLIGHTING];
+
+        $map[SuplaConst::TYPE_DISTANCESENSOR] = ['0', SuplaConst::FNC_DEPTHSENSOR,
+            SuplaConst::FNC_DISTANCESENSOR,
+        ];
+
         if ($type === null) {
             return $map;
         }
-        
+
         if ($type == SuplaConst::TYPE_RELAY) {
-            $fnc = array(0);
-            
+            $fnc = [0];
+
             if ($flist !== null
-                 && is_int($flist) ) {
+                && is_int($flist)
+            ) {
                 if ($flist & SuplaConst::BIT_RELAYFNC_CONTROLLINGTHEGATEWAYLOCK) {
                     $fnc[] = SuplaConst::FNC_CONTROLLINGTHEGATEWAYLOCK;
                 }
-                 
+
                 if ($flist & SuplaConst::BIT_RELAYFNC_CONTROLLINGTHEGATE) {
                     $fnc[] = SuplaConst::FNC_CONTROLLINGTHEGATE;
                 }
-                    
+
                 if ($flist & SuplaConst::BIT_RELAYFNC_CONTROLLINGTHEGARAGEDOOR) {
                     $fnc[] = SuplaConst::FNC_CONTROLLINGTHEGARAGEDOOR;
                 }
-                 
+
                 if ($flist & SuplaConst::BIT_RELAYFNC_CONTROLLINGTHEDOORLOCK) {
                     $fnc[] = SuplaConst::FNC_CONTROLLINGTHEDOORLOCK;
                 }
-                 
+
                 if ($flist & SuplaConst::BIT_RELAYFNC_CONTROLLINGTHEROLLERSHUTTER) {
                     $fnc[] = SuplaConst::FNC_CONTROLLINGTHEROLLERSHUTTER;
                 }
-                 
+
                 if ($flist & SuplaConst::BIT_RELAYFNC_POWERSWITCH) {
                     $fnc[] = SuplaConst::FNC_POWERSWITCH;
                 }
-                 
+
                 if ($flist & SuplaConst::BIT_RELAYFNC_LIGHTSWITCH) {
                     $fnc[] = SuplaConst::FNC_LIGHTSWITCH;
                 }
             }
-            
+
             return $fnc;
         }
-        
+
         return $map[$type];
     }
-    
+
     public function channelTypeToString($type) {
         $result = 'Unknown';
-        
+
         switch ($type) {
             case SuplaConst::TYPE_SENSORNO:
                 $result = 'Sensor (normal open)';
@@ -199,13 +197,13 @@ class IODeviceManager {
                 $result = 'Distance sensor';
                 break;
         }
-        
+
         return $this->translator->trans($result);
     }
-    
+
     public function channelFunctionToString($func) {
         $result = 'None';
-        
+
         switch ($func) {
             case SuplaConst::FNC_CONTROLLINGTHEGATEWAYLOCK:
                 $result = 'Gateway lock operation';
@@ -271,12 +269,12 @@ class IODeviceManager {
                 $result = 'Depth sensor';
                 break;
         }
-        
+
         return $this->translator->trans($result);
     }
-    
+
     public function FunctionIsOpeningSensor($func) {
-        
+
         switch ($func) {
             case SuplaConst::FNC_OPENINGSENSOR_GATEWAY:
             case SuplaConst::FNC_OPENINGSENSOR_GATE:
@@ -285,13 +283,13 @@ class IODeviceManager {
             case SuplaConst::FNC_OPENINGSENSOR_ROLLERSHUTTER:
                 return true;
         }
-        
+
         return false;
     }
-     
+
     public function channelIoToString($type) {
         $result = 'Unknown';
-        
+
         switch ($type) {
             case SuplaConst::TYPE_THERMOMETERDS18B20:
             case SuplaConst::TYPE_DHT11:
@@ -314,50 +312,49 @@ class IODeviceManager {
                 $result = 'Output';
                 break;
         }
-        
+
         return $this->translator->trans($result);
     }
-    
+
     public function functionActionMap() {
         return [
-                SuplaConst::FNC_CONTROLLINGTHEGATEWAYLOCK => [SuplaConst::ACTION_OPEN],
-                SuplaConst::FNC_CONTROLLINGTHEDOORLOCK => [SuplaConst::ACTION_OPEN],
-                SuplaConst::FNC_CONTROLLINGTHEGATE => [SuplaConst::ACTION_OPEN, SuplaConst::ACTION_CLOSE],
-                SuplaConst::FNC_CONTROLLINGTHEGARAGEDOOR => [SuplaConst::ACTION_OPEN, SuplaConst::ACTION_CLOSE],
-                SuplaConst::FNC_CONTROLLINGTHEROLLERSHUTTER => [SuplaConst::ACTION_COVER, SuplaConst::ACTION_UNCOVER],
-                SuplaConst::FNC_POWERSWITCH => [SuplaConst::ACTION_TURN_ON, SuplaConst::ACTION_TURN_OFF],
-                SuplaConst::FNC_LIGHTSWITCH => [SuplaConst::ACTION_TURN_ON, SuplaConst::ACTION_TURN_OFF],
-                SuplaConst::FNC_DIMMER => [SuplaConst::ACTION_DIM],
-                SuplaConst::FNC_DIMMER => [SuplaConst::ACTION_SET_RGB_COLOR, SuplaConst::ACTION_TURN_OFF],
-                SuplaConst::FNC_DIMMERANDRGBLIGHTING => [SuplaConst::ACTION_DIM, SuplaConst::ACTION_SET_RGB_COLOR, SuplaConst::ACTION_SET_RANDOM_RGB_COLOR, SuplaConst::ACTION_TURN_OFF],
+            SuplaConst::FNC_CONTROLLINGTHEGATEWAYLOCK => [SuplaConst::ACTION_OPEN],
+            SuplaConst::FNC_CONTROLLINGTHEDOORLOCK => [SuplaConst::ACTION_OPEN],
+            SuplaConst::FNC_CONTROLLINGTHEGATE => [SuplaConst::ACTION_OPEN, SuplaConst::ACTION_CLOSE],
+            SuplaConst::FNC_CONTROLLINGTHEGARAGEDOOR => [SuplaConst::ACTION_OPEN, SuplaConst::ACTION_CLOSE],
+            SuplaConst::FNC_CONTROLLINGTHEROLLERSHUTTER => [SuplaConst::ACTION_COVER, SuplaConst::ACTION_UNCOVER],
+            SuplaConst::FNC_POWERSWITCH => [SuplaConst::ACTION_TURN_ON, SuplaConst::ACTION_TURN_OFF],
+            SuplaConst::FNC_LIGHTSWITCH => [SuplaConst::ACTION_TURN_ON, SuplaConst::ACTION_TURN_OFF],
+            SuplaConst::FNC_DIMMER => [SuplaConst::ACTION_DIM],
+            SuplaConst::FNC_DIMMER => [SuplaConst::ACTION_SET_RGB_COLOR, SuplaConst::ACTION_TURN_OFF],
+            SuplaConst::FNC_DIMMERANDRGBLIGHTING => [SuplaConst::ACTION_DIM, SuplaConst::ACTION_SET_RGB_COLOR, SuplaConst::ACTION_SET_RANDOM_RGB_COLOR, SuplaConst::ACTION_TURN_OFF],
         ];
     }
-    
+
     public function actionStringMap() {
         return [
-                SuplaConst::ACTION_COVER => 'Cover',
-                SuplaConst::ACTION_CLOSE => 'Close',
-                SuplaConst::ACTION_OPEN => 'Open',
-                SuplaConst::ACTION_DIM => 'Dim',
-                SuplaConst::ACTION_SET_RGB_COLOR => 'Set color',
-                SuplaConst::ACTION_SET_RANDOM_RGB_COLOR => 'Set random color',
-                SuplaConst::ACTION_TURN_OFF => 'Turn off',
-                SuplaConst::ACTION_TURN_ON => 'Turn on',
-                SuplaConst::ACTION_UNCOVER => 'Uncover',
+            SuplaConst::ACTION_COVER => 'Cover',
+            SuplaConst::ACTION_CLOSE => 'Close',
+            SuplaConst::ACTION_OPEN => 'Open',
+            SuplaConst::ACTION_DIM => 'Dim',
+            SuplaConst::ACTION_SET_RGB_COLOR => 'Set color',
+            SuplaConst::ACTION_SET_RANDOM_RGB_COLOR => 'Set random color',
+            SuplaConst::ACTION_TURN_OFF => 'Turn off',
+            SuplaConst::ACTION_TURN_ON => 'Turn on',
+            SuplaConst::ACTION_UNCOVER => 'Uncover',
         ];
     }
-    
+
     public function ioDeviceById($id, $user = null) {
         if ($user === null) {
             $user = $this->sec->getToken()->getUser();
         }
-        
+
         if ($user === null) {
             return null;
         }
-        
-            
-        return $this->dev_rep->findOneBy(array('user' => $user, 'id' => intval($id)));
+
+        return $this->dev_rep->findOneBy(['user' => $user, 'id' => intval($id)]);
     }
 
     /**
@@ -369,104 +366,103 @@ class IODeviceManager {
         if ($user === null) {
             $user = $this->sec->getToken()->getUser();
         }
-        
+
         if ($user === null) {
             return null;
         }
-        
-        return $this->channel_rep->findOneBy(array('user' => $user, 'id' => intval($id)));
+
+        return $this->channel_rep->findOneBy(['user' => $user, 'id' => intval($id)]);
     }
-    
+
     public function getChannels(IODevice $iodev) {
         if ($iodev === null || !($iodev instanceof IODevice)) {
             return null;
         }
-        
+
         return $this->channel_rep->findBy(
-            array('iodevice' => $iodev)
+            ['iodevice' => $iodev]
         );
     }
-    
+
     public function getUnattachedOPENINGSENSORs($func, $include = 0) {
         $user = $this->sec->getToken()->getUser();
-        
+
         return $this->channel_rep->findBy(
-            array('user' => $user,
-                      'type' => array(SuplaConst::TYPE_SENSORNO, SuplaConst::TYPE_SENSORNC),
-                      'function' => $func,
-                      'param1' => array(0, $include),
-                      'param2' => 0,
-                      'param3' => 0)
+            ['user' => $user,
+                'type' => [SuplaConst::TYPE_SENSORNO, SuplaConst::TYPE_SENSORNC],
+                'function' => $func,
+                'param1' => [0, $include],
+                'param2' => 0,
+                'param3' => 0]
         );
     }
-    
+
     public function getSensorUnnattachedSubChannels($func, $include = 0) {
-        
+
         $user = $this->sec->getToken()->getUser();
-        
+
         return $this->channel_rep->findBy(
-            array('user' => $user,
-                      'type' => array(SuplaConst::TYPE_RELAY, SuplaConst::TYPE_RELAYHFD4, SuplaConst::TYPE_RELAYG5LA1A, SuplaConst::TYPE_2XRELAYG5LA1A),
-                      'function' => $func,
-                      'param2' => array(0, $include),
-                      'param3' => 0)
+            ['user' => $user,
+                'type' => [SuplaConst::TYPE_RELAY, SuplaConst::TYPE_RELAYHFD4, SuplaConst::TYPE_RELAYG5LA1A, SuplaConst::TYPE_2XRELAYG5LA1A],
+                'function' => $func,
+                'param2' => [0, $include],
+                'param3' => 0]
         );
     }
-    
+
     public function channelsToArray($channels) {
-        $result = array();
+        $result = [];
 
         foreach ($channels as $channel) {
-            $item = array('id' => $channel->getId(),
-                          'number' => $channel->getChannelNumber(),
-                          'io' => $this->channelIoToString($channel->getType()),
-                          'type' => $this->channelTypeToString($channel->getType()),
-                          'function' => $this->channelFunctionToString($channel->getFunction()),
-                          'function_id' => $channel->getFunction(),
-                          'function_is_openingsensor' => $this->FunctionIsOpeningSensor($channel->getFunction()),
-                          'caption' => $channel->getCaption()
-            );
-            
+            $item = ['id' => $channel->getId(),
+                'number' => $channel->getChannelNumber(),
+                'io' => $this->channelIoToString($channel->getType()),
+                'type' => $this->channelTypeToString($channel->getType()),
+                'function' => $this->channelFunctionToString($channel->getFunction()),
+                'function_id' => $channel->getFunction(),
+                'function_is_openingsensor' => $this->FunctionIsOpeningSensor($channel->getFunction()),
+                'caption' => $channel->getCaption(),
+            ];
+
             $result[$channel->getId()] = $item;
         }
 
-        
         return $result;
     }
-    
+
     public function getChannelName(IODeviceChannel $channel) {
         $result = substr($channel->getIoDevice()->getGUIDString(), -12);
-        
+
         if (strlen($channel->getIoDevice()->getName()) > 0) {
-            $result .= ' ['.trim(substr($channel->getIoDevice()->getName(), 0, 50)).']';
+            $result .= ' [' . trim(substr($channel->getIoDevice()->getName(), 0, 50)) . ']';
         }
-        
-        $result .= ' '.$this->channelFunctionToString($channel->getFunction()).' #'.$channel->getChannelNumber();
-        
+
+        $result .= ' ' . $this->channelFunctionToString($channel->getFunction()) . ' #' . $channel->getChannelNumber();
+
         if (strlen($channel->getCaption()) > 0) {
-            $result .= ' ['.substr($channel->getCaption(), 0, 50).']';
+            $result .= ' [' . substr($channel->getCaption(), 0, 50) . ']';
         }
-        
+
         return $result;
     }
-    
+
     private function channelsToTwigParams($_channels) {
-        $result = array();
-            
+        $result = [];
+
         if (is_array($_channels) === true) {
             foreach ($_channels as $channel) {
-                $result[] = array('id'=>$channel->getId(), 'name'=>$this->getChannelName($channel));
+                $result[] = ['id' => $channel->getId(), 'name' => $this->getChannelName($channel)];
             }
         }
-            
-        return array('channels' => $result);
+
+        return ['channels' => $result];
     }
-    
+
     public function channelFunctionParamsHtmlTemplate($channel_id, $function = null) {
-        
+
         $channel = null;
         $cinstance = false;
-        
+
         if ($channel_id instanceof IODeviceChannel) {
             $channel = $channel_id;
             $function = $channel->getFunction();
@@ -475,184 +471,181 @@ class IODeviceManager {
             $function = intval($function);
             $channel = $this->channelById($channel_id);
         }
-        
-    
+
         if ($channel) {
             $tmpl = 'none';
             $subchannel_selected = null;
-            $twig_params = array('channel' => $channel);
-            
+            $twig_params = ['channel' => $channel];
+
             switch ($function) {
                 case SuplaConst::FNC_CONTROLLINGTHEGATEWAYLOCK:
                 case SuplaConst::FNC_CONTROLLINGTHEGATE:
                 case SuplaConst::FNC_CONTROLLINGTHEGARAGEDOOR:
                 case SuplaConst::FNC_CONTROLLINGTHEDOORLOCK:
-                    $timesel[] = array('name'=>'0.5', 'val' => '500');
-                    $timesel[] = array('name'=>'1', 'val' => '1000');
-                    $timesel[] = array('name'=>'2', 'val' => '2000');
-                    
-                    
+                    $timesel[] = ['name' => '0.5', 'val' => '500'];
+                    $timesel[] = ['name' => '1', 'val' => '1000'];
+                    $timesel[] = ['name' => '2', 'val' => '2000'];
+
                     if ($function == SuplaConst::FNC_CONTROLLINGTHEGATEWAYLOCK
-                         || $function == SuplaConst::FNC_CONTROLLINGTHEDOORLOCK ) {
-                        $timesel[] = array('name'=>'4', 'val' => '4000');
-                        $timesel[] = array('name'=>'6', 'val' => '6000');
-                        $timesel[] = array('name'=>'8', 'val' => '8000');
-                        $timesel[] = array('name'=>'10', 'val' => '10000');
-                        
+                        || $function == SuplaConst::FNC_CONTROLLINGTHEDOORLOCK
+                    ) {
+                        $timesel[] = ['name' => '4', 'val' => '4000'];
+                        $timesel[] = ['name' => '6', 'val' => '6000'];
+                        $timesel[] = ['name' => '8', 'val' => '8000'];
+                        $timesel[] = ['name' => '10', 'val' => '10000'];
+
                         $twig_params['default_time_val'] = '6000';
                     } else {
                         $twig_params['default_time_val'] = '500';
                     }
-                    
-                    
+
                     $os_func = 0;
-                    
+
                     switch ($function) {
                         case SuplaConst::FNC_CONTROLLINGTHEGATEWAYLOCK:
                             $os_func = SuplaConst::FNC_OPENINGSENSOR_GATEWAY;
                             break;
-                            
+
                         case SuplaConst::FNC_CONTROLLINGTHEGATE:
                             $os_func = SuplaConst::FNC_OPENINGSENSOR_GATE;
                             break;
-                            
+
                         case SuplaConst::FNC_CONTROLLINGTHEGARAGEDOOR:
                             $os_func = SuplaConst::FNC_OPENINGSENSOR_GARAGEDOOR;
                             break;
-                            
+
                         case SuplaConst::FNC_CONTROLLINGTHEDOORLOCK:
                             $os_func = SuplaConst::FNC_OPENINGSENSOR_DOOR;
                             break;
-                                        
+
                         case SuplaConst::FNC_CONTROLLINGTHEROLLERSHUTTER:
                             $os_func = SuplaConst::FNC_OPENINGSENSOR_ROLLERSHUTTER;
                             break;
                     };
-                    
+
                     $tmpl = 'gateway';
                     $twig_params = array_merge($twig_params, $this->channelsToTwigParams($this->getUnattachedOPENINGSENSORs($os_func, $channel->getId())));
                     $twig_params['subchannel_selected'] = $this->translator->trans('None');
                     $twig_params['timesel'] = $timesel;
                     $twig_params['cinstance'] = $cinstance;
                     $subchannel_selected = $channel->getParam2();
-                    
-                    
+
                     break;
-                    
-                    
+
                 case SuplaConst::FNC_CONTROLLINGTHEROLLERSHUTTER:
                     $tmpl = 'rollershutter';
                     $twig_params = array_merge($twig_params, $this->channelsToTwigParams($this->getUnattachedOPENINGSENSORs(SuplaConst::FNC_OPENINGSENSOR_ROLLERSHUTTER, $channel->getId())));
                     $twig_params['subchannel_selected'] = $this->translator->trans('None');
                     $subchannel_selected = $channel->getParam2();
-                
+
                     break;
-                    
+
                 case SuplaConst::FNC_OPENINGSENSOR_GATEWAY:
                 case SuplaConst::FNC_OPENINGSENSOR_GATE:
                 case SuplaConst::FNC_OPENINGSENSOR_GARAGEDOOR:
                 case SuplaConst::FNC_OPENINGSENSOR_DOOR:
                 case SuplaConst::FNC_OPENINGSENSOR_ROLLERSHUTTER:
                     $sc_func = 0;
-                    
+
                     switch ($function) {
                         case SuplaConst::FNC_OPENINGSENSOR_GATEWAY:
                             $sc_func = SuplaConst::FNC_CONTROLLINGTHEGATEWAYLOCK;
                             break;
-                            
+
                         case SuplaConst::FNC_OPENINGSENSOR_GATE:
                             $sc_func = SuplaConst::FNC_CONTROLLINGTHEGATE;
                             break;
-                            
+
                         case SuplaConst::FNC_OPENINGSENSOR_GARAGEDOOR:
                             $sc_func = SuplaConst::FNC_CONTROLLINGTHEGARAGEDOOR;
                             break;
-        
+
                         case SuplaConst::FNC_OPENINGSENSOR_DOOR:
                             $sc_func = SuplaConst::FNC_CONTROLLINGTHEDOORLOCK;
                             break;
-                            
+
                         case SuplaConst::FNC_OPENINGSENSOR_ROLLERSHUTTER:
                             $sc_func = SuplaConst::FNC_CONTROLLINGTHEROLLERSHUTTER;
                             break;
                     };
-                    
+
                     $tmpl = 'openingsensor';
                     $twig_params = array_merge($twig_params, $this->channelsToTwigParams($this->getSensorUnnattachedSubChannels($sc_func, $channel->getId())));
                     $twig_params['subchannel_selected'] = $this->translator->trans('None');
                     $subchannel_selected = $channel->getParam1();
-                                        
+
                     break;
             }
-            
+
             if (is_int($subchannel_selected) === true
-                    && $subchannel_selected !== 0
-                    && $cinstance === true ) {
-                        $subchannel = $this->channelById($subchannel_selected);
-                        
+                && $subchannel_selected !== 0
+                && $cinstance === true
+            ) {
+                $subchannel = $this->channelById($subchannel_selected);
+
                 if ($subchannel !== null) {
                     $twig_params['subchannel_selected'] = $this->getChannelName($subchannel);
                 }
             }
-            
-            return $this->template->render('SuplaBundle:Form:ChannelFunctions/'.$tmpl.'.html.twig', $twig_params);
+
+            return $this->template->render('SuplaBundle:Form:ChannelFunctions/' . $tmpl . '.html.twig', $twig_params);
         }
-        
+
         return null;
     }
-    
+
     public function channelGetCSV($channel, $zip_filename = false) {
-    
+
         if ($channel->getType() != SuplaConst::TYPE_THERMOMETERDS18B20
-             && $channel->getType() != SuplaConst::TYPE_DHT11
-             && $channel->getType() != SuplaConst::TYPE_DHT21
-             && $channel->getType() != SuplaConst::TYPE_DHT22
-             && $channel->getType() != SuplaConst::TYPE_AM2301
-             && $channel->getType() != SuplaConst::TYPE_AM2302 ) {
+            && $channel->getType() != SuplaConst::TYPE_DHT11
+            && $channel->getType() != SuplaConst::TYPE_DHT21
+            && $channel->getType() != SuplaConst::TYPE_DHT22
+            && $channel->getType() != SuplaConst::TYPE_AM2301
+            && $channel->getType() != SuplaConst::TYPE_AM2302
+        ) {
             return false;
         }
-        
+
         $temp_file = tempnam(sys_get_temp_dir(), 'supla_csv_');
-            
+
         if ($temp_file !== false) {
             $handle = fopen($temp_file, 'w+');
-    
+
             if ($channel->getType() == SuplaConst::TYPE_THERMOMETERDS18B20) {
-                fputcsv($handle, array('Timestamp', 'Date and time (CET)', 'Temperature'));
-                    
-                $results = $this->doctrine->getManager()->getConnection()->query("SELECT UNIX_TIMESTAMP(`date`) AS date_ts, `date`, `temperature` FROM `supla_temperature_log` WHERE channel_id = ".intval($channel->getId()));
-                
+                fputcsv($handle, ['Timestamp', 'Date and time (CET)', 'Temperature']);
+
+                $results = $this->doctrine->getManager()->getConnection()->query("SELECT UNIX_TIMESTAMP(`date`) AS date_ts, `date`, `temperature` FROM `supla_temperature_log` WHERE channel_id = " . intval($channel->getId()));
+
                 while ($row = $results->fetch()) {
-                    fputcsv($handle, array($row['date_ts'], $row['date'], $row['temperature']));
+                    fputcsv($handle, [$row['date_ts'], $row['date'], $row['temperature']]);
                 }
             } else {
-                fputcsv($handle, array('Timestamp', 'Date and time (CET)', 'Temperature', 'Humidity'));
-                    
-                $results = $this->doctrine->getManager()->getConnection()->query("SELECT UNIX_TIMESTAMP(`date`) AS date_ts, `date`, `temperature`, `humidity` FROM `supla_temphumidity_log` WHERE channel_id = ".intval($channel->getId()));
-                
+                fputcsv($handle, ['Timestamp', 'Date and time (CET)', 'Temperature', 'Humidity']);
+
+                $results = $this->doctrine->getManager()->getConnection()->query("SELECT UNIX_TIMESTAMP(`date`) AS date_ts, `date`, `temperature`, `humidity` FROM `supla_temphumidity_log` WHERE channel_id = " . intval($channel->getId()));
+
                 while ($row = $results->fetch()) {
-                    fputcsv($handle, array($row['date_ts'], $row['date'], $row['temperature'], $row['humidity']));
+                    fputcsv($handle, [$row['date_ts'], $row['date'], $row['temperature'], $row['humidity']]);
                 }
             }
 
-    
             fclose($handle);
-    
+
             if ($zip_filename !== false) {
                 $zip = new ZipArchive();
-                    
-                if ($zip->open($temp_file.'.zip', ZipArchive::CREATE) === true) {
-                    $zip->addFile($temp_file, $zip_filename.'.csv');
+
+                if ($zip->open($temp_file . '.zip', ZipArchive::CREATE) === true) {
+                    $zip->addFile($temp_file, $zip_filename . '.csv');
                     $zip->close();
                 }
-                    
+
                 unlink($temp_file);
-                $temp_file = $temp_file.'.zip';
+                $temp_file = $temp_file . '.zip';
             }
-    
+
             return $temp_file;
         }
-    
+
         return false;
     }
 }

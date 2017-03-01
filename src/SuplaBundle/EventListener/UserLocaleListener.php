@@ -36,7 +36,7 @@ class UserLocaleListener {
      * @param InteractiveLoginEvent $event
      */
     public function onInteractiveLogin(InteractiveLoginEvent $event) {
-      
-            $this->session->set('_locale', 'pl_PL');
+
+        $this->session->set('_locale', 'pl_PL');
     }
 }

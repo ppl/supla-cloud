@@ -19,9 +19,9 @@
 
 namespace SuplaBundle\Form\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use SuplaBundle\Entity\User;
 use EWZ\Bundle\RecaptchaBundle\Validator\Constraints as Recaptcha;
+use SuplaBundle\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Registration {
 
@@ -30,10 +30,10 @@ class Registration {
      * @Assert\Valid()
      */
     protected $user;
-    
+
     /**
-    * @Recaptcha\IsTrue
-    */
+     * @Recaptcha\IsTrue
+     */
     protected $recaptcha;
 
     public function setUser(User $user) {
@@ -43,11 +43,11 @@ class Registration {
     public function getUser() {
         return $this->user;
     }
-    
+
     public function getRecaptcha() {
         return $this->recaptcha;
     }
-    
+
     public function setRecaptcha($recaptcha) {
         $this->recaptcha = $recaptcha;
     }

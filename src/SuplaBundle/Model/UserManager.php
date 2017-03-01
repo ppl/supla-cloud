@@ -102,23 +102,24 @@ class UserManager {
         $em->flush();
     }
 
-
     public function userByEmail($email) {
         return $this->rep->findOneByEmail($email);
     }
 
     public function userByConfirmationToken($token) {
         if ($token === null
-                || strlen($token) < 40 ) {
+            || strlen($token) < 40
+        ) {
             return null;
         }
 
-        return $this->rep->findOneBy(array('token' => $token, 'enabled' => 0, 'currentLogin' => null, 'lastLogin' => null, 'passwordRequestedAt' => null));
+        return $this->rep->findOneBy(['token' => $token, 'enabled' => 0, 'currentLogin' => null, 'lastLogin' => null, 'passwordRequestedAt' => null]);
     }
 
     public function userByPasswordToken($token) {
         if ($token === null
-                || strlen($token) < 40 ) {
+            || strlen($token) < 40
+        ) {
             return null;
         }
 
@@ -129,14 +130,14 @@ class UserManager {
 
         try {
             return $qb->where($qb->expr()->eq('u.token', ':token'))
-            ->andWhere("u.token != ''")
-            ->andWhere("u.token IS NOT NULL")
-            ->andWhere("u.enabled = 1")
-            ->andWhere($qb->expr()->gte('u.passwordRequestedAt', ':date'))
-            ->setParameter('token', $token)
-            ->setParameter('date', $date)
-            ->getQuery()
-            ->getSingleResult();
+                ->andWhere("u.token != ''")
+                ->andWhere("u.token IS NOT NULL")
+                ->andWhere("u.enabled = 1")
+                ->andWhere($qb->expr()->gte('u.passwordRequestedAt', ':date'))
+                ->setParameter('token', $token)
+                ->setParameter('date', $date)
+                ->getQuery()
+                ->getSingleResult();
         } catch (\Doctrine\ORM\NoResultException $e) {
             return null;
         }

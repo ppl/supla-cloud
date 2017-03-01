@@ -15,7 +15,6 @@ interface SchedulePlanner {
      */
     public function calculateNextRunDate(Schedule $schedule, \DateTime $currentDate);
 
-
     /**
      * Checks if it can calculate the next run date for given schedule.
      *

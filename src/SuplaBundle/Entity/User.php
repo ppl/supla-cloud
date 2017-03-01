@@ -19,13 +19,12 @@
 
 namespace SuplaBundle\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
-use Symfony\Component\Validator\Constraints\DateTime;
-use Symfony\Component\HttpKernel\Log\LoggerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpKernel\Log\LoggerInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -108,14 +107,12 @@ class User implements AdvancedUserInterface {
      */
     private $passwordRequestedAt;
 
-
     private $recaptcha;
 
     /**
      * @ORM\Column(name="timezone", type="string", length=30, nullable=true)
      */
     private $timezone;
-
 
     /**
      * @ORM\Column(name="limit_aid", type="integer")
@@ -140,7 +137,6 @@ class User implements AdvancedUserInterface {
      * @Assert\NotBlank()
      */
     private $limitClientApp;
-
 
     /**
      * @ORM\Column(name="limit_schedule", type="integer", options={"default"=10})
@@ -361,7 +357,7 @@ class User implements AdvancedUserInterface {
     }
 
     public function setRoles(array $roles) {
-        $this->roles = array();
+        $this->roles = [];
 
         foreach ($roles as $role) {
             $this->addRole($role);

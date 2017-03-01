@@ -1,7 +1,10 @@
 <template>
     <span class="timezone-picker">
-        <select data-placeholder="Wybierz strefę czasową" v-model="timezone" ref="dropdown">
-            <option v-for="timezone in availableTimezones" :value="timezone.name">
+        <select data-placeholder="Wybierz strefę czasową"
+            v-model="timezone"
+            ref="dropdown">
+            <option v-for="timezone in availableTimezones"
+                :value="timezone.name">
                 {{ timezone.name }}
                 (UTC{{timezone.offset >= 0 ? '+' : ''}}{{timezone.offset}})
                 {{ timezone.currentTime }}
@@ -47,7 +50,8 @@
     }
 </script>
 
-<style lang="scss" rel="stylesheet/scss">
+<style lang="scss"
+    rel="stylesheet/scss">
     .timezone-picker {
         select {
             max-width: 100%;

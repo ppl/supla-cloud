@@ -19,12 +19,11 @@
 
 namespace SuplaBundle\Form\Model;
 
+use SuplaBundle\Validator\Constraints as SuplaAssert;
 use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 use Symfony\Component\Validator\Constraints as Assert;
-use SuplaBundle\Validator\Constraints as SuplaAssert;
 
 class ChangePassword {
-
 
     /**
      * @SecurityAssert\UserPassword(
@@ -32,7 +31,7 @@ class ChangePassword {
      * )
      */
     protected $oldPassword;
-    
+
     /**
      * @Assert\Length(
      *     min = 8,
@@ -41,8 +40,7 @@ class ChangePassword {
      * @Assert\NotBlank(message="Password field cannot be left empty")
      */
     protected $newPassword;
-    
-    
+
     /**
      * @Assert\Expression(
      *     "this.getNewPassword() == this.getConfirmPassword()",
@@ -50,27 +48,27 @@ class ChangePassword {
      * )
      */
     protected $confirmPassword;
-    
+
     function getOldPassword() {
         return $this->oldPassword;
     }
-    
+
     function setOldPassword($oldPassword) {
         $this->oldPassword = $oldPassword;
     }
-    
+
     function getNewPassword() {
         return $this->newPassword;
     }
-    
+
     function setNewPassword($newPassword) {
         $this->newPassword = $newPassword;
     }
-    
+
     function getConfirmPassword() {
         return $this->confirmPassword;
     }
-    
+
     function setConfirmPassword($confirmPassword) {
         $this->confirmPassword = $confirmPassword;
     }

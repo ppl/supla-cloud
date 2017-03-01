@@ -135,14 +135,14 @@ class ScheduleController extends Controller {
                 $this->get('schedule_manager')->enable($schedule);
             } elseif (isset($data['delete'])) {
                 $this->get('schedule_manager')->delete($schedule);
-                $this->get('session')->getFlashBag()->add('success', array('title' => 'Success', 'message' => 'Schedule has been deleted'));
+                $this->get('session')->getFlashBag()->add('success', ['title' => 'Success', 'message' => 'Schedule has been deleted']);
                 return $this->redirectToRoute("_schedule_list");
             }
             return $this->redirectToRoute("_schedule_details", ['schedule' => $schedule->getId()]);
         }
         $data = [
             'schedule' => $schedule,
-            'closestExecutions' => $this->get('schedule_manager')->findClosestExecutions($schedule)
+            'closestExecutions' => $this->get('schedule_manager')->findClosestExecutions($schedule),
         ];
         if (in_array('application/json', $request->getAcceptableContentTypes())) {
             return new JsonResponse($this->get('serializer')->serialize($data, 'json', ['groups' => ['basic']]), 200, [], true);

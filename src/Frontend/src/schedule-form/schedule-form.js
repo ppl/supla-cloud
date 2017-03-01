@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import ScheduleForm from './schedule-form.vue'
-import * as mutations from './mutations'
-import * as actions from './actions'
+import Vue from "vue";
+import Vuex from "vuex";
+import ScheduleForm from "./schedule-form.vue";
+import * as mutations from "./mutations";
+import * as actions from "./actions";
 
 new Vue({
     el: '#schedule-form',

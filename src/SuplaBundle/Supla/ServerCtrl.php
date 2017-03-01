@@ -49,7 +49,6 @@ class ServerCtrl {
             $this->disconnect();
         }
 
-
         return $this->socket;
     }
 
@@ -97,16 +96,14 @@ class ServerCtrl {
         return $result !== false && preg_match("/^CONNECTED:" . $iodev_id . "\n/", $result) === 1 ? true : false;
     }
 
-
     function iodevice_connected($user_id, $ids = 0) {
 
-        $result = array();
+        $result = [];
         $user_id = intval($user_id, 0);
-
 
         if ($user_id != 0 && $this->connect() !== false) {
             if (!is_array($ids) && is_int($ids)) {
-                $ids = array($ids);
+                $ids = [$ids];
             }
 
             if (is_array($ids)) {
@@ -119,7 +116,6 @@ class ServerCtrl {
 
             $this->disconnect();
         }
-
 
         return $result;
     }
@@ -141,7 +137,6 @@ class ServerCtrl {
         $user_id = intval($user_id, 0);
         $iodev_id = intval($iodev_id, 0);
         $channel_id = intval($channel_id, 0);
-
 
         if ($user_id != 0
             && $iodev_id != 0
@@ -165,7 +160,6 @@ class ServerCtrl {
         $user_id = intval($user_id, 0);
         $iodev_id = intval($iodev_id, 0);
         $channel_id = intval($channel_id, 0);
-
 
         if ($user_id != 0
             && $iodev_id != 0
@@ -234,7 +228,7 @@ class ServerCtrl {
                 && is_numeric($color_brightness)
                 && is_numeric($brightness)
             ) {
-                return array('color' => sprintf('0x%06X', $color), 'color_brightness' => $color_brightness, 'brightness' => $brightness);
+                return ['color' => sprintf('0x%06X', $color), 'color_brightness' => $color_brightness, 'brightness' => $brightness];
             }
         }
 

@@ -19,12 +19,10 @@
 
 namespace SuplaBundle\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
-use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -33,15 +31,13 @@ use Symfony\Component\HttpKernel\Log\LoggerInterface;
  */
 class ClientAPP {
 
-
-    
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @ORM\Column(name="guid", type="binary", length=16, nullable=false, unique=false)
      */
@@ -52,43 +48,43 @@ class ClientAPP {
      * @ORM\JoinColumn(name="access_id", referencedColumnName="id", nullable=false)
      */
     private $accessId;
-    
+
     /**
      * @ORM\Column(name="name", type="string", length=100, nullable=true)
      * @Assert\Length(max=100)
      */
     private $name;
-    
+
     /**
      * @ORM\Column(name="enabled", type="boolean", nullable=false)
      */
     private $enabled;
-    
+
     /**
      * @ORM\Column(name="reg_ipv4", type="integer", nullable=true)
      */
     private $regIpv4;
-    
+
     /**
      * @ORM\Column(name="reg_date", type="datetime")
      */
     private $regDate;
-    
+
     /**
      * @ORM\Column(name="last_access_ipv4", type="integer", nullable=true)
      */
     private $lastAccessIpv4;
-    
+
     /**
      * @ORM\Column(name="last_access_date", type="datetime")
      */
     private $lastAccessDate;
-    
+
     /**
      * @ORM\Column(name="software_version", type="string", length=20, nullable=false)
      */
     private $softwareVersion;
-    
+
     /**
      * @ORM\Column(name="protocol_version", type="integer", nullable=false)
      */

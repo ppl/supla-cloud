@@ -19,11 +19,9 @@
 
 namespace SuplaBundle\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints\DateTime;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -37,80 +35,78 @@ class AccessID {
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @ORM\Column(name="password", type="string", length=32, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Length(min=8, max=32)
      */
     private $password;
-    
-    
+
     /**
      * @ORM\Column(name="caption", type="string", length=100, nullable=true)
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=100)
      */
     private $caption;
-    
-    
+
     /**
      * @ORM\Column(name="enabled", type="boolean",  nullable=false)
      */
     private $enabled;
-   
+
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="accessids")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="Location", mappedBy="accessIds", cascade={"persist"})
      */
     private $locations;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="ClientAPP", mappedBy="accessId")
      **/
     private $clientApps;
-    
+
     public function __construct(User $user = null) {
-            
+
         $this->enabled = true;
         $this->clientApps = new ArrayCollection();
         $this->locations = new ArrayCollection();
-                
+
         if ($user !== null) {
             $user->getAccessIDS()->add($this);
             $this->user = $user;
         }
     }
-        
+
     public function getPassword() {
         return $this->password;
     }
-    
+
     public function setPassword($password) {
         $this->password = $password;
     }
-    
+
     public function setCaption($caption) {
         $this->caption = $caption;
     }
-    
+
     public function getCaption() {
         return $this->caption;
     }
-    
+
     public function getUser() {
         return $this->user;
     }
-    
+
     public function getLocations() {
         return $this->locations;
     }
-    
+
     public function getId() {
         return $this->id;
     }
@@ -118,7 +114,7 @@ class AccessID {
     public function getEnabled() {
         return $this->enabled;
     }
-    
+
     public function setEnabled($enabled) {
         $this->enabled = $enabled;
     }

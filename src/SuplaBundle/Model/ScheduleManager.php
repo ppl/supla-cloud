@@ -66,7 +66,7 @@ class ScheduleManager {
             $sortKey = $slugify->slugify(implode(' ', [
                 $this->ioDeviceManager->channelFunctionToString($channel->getFunction()),
                 $channel->getCaption() ? $channel->getCaption() : 'zzzzzz', // Default zzzzz caption places the items without caption at the end. Lame, but works :-D
-                $channel->getId()
+                $channel->getId(),
             ]));
             $channelsList[$sortKey] = $channel;
         }
@@ -127,7 +127,7 @@ class ScheduleManager {
         $inPast = $this->scheduledExecutionsRepository->matching($criteria)->toArray();
         return [
             'past' => array_reverse($inPast),
-            'future' => $inFuture
+            'future' => $inFuture,
         ];
     }
 

@@ -1,9 +1,9 @@
 <template>
     <div class="btn-group btn-group-lg">
         <button class="btn btn-default"
-                v-for="mode in availableModes"
-                @click="changeScheduleMode(mode)"
-                :class="{'active btn-success': scheduleMode == mode}">
+            v-for="mode in availableModes"
+            @click="changeScheduleMode(mode)"
+            :class="{'active btn-success': scheduleMode == mode}">
             {{ $t(mode) }}
         </button>
     </div>

@@ -1,6 +1,7 @@
 <template>
     <div class="form-group">
-        <div class="clockpicker" ref="clockpicker"></div>
+        <div class="clockpicker"
+            ref="clockpicker"></div>
     </div>
 </template>
 

@@ -1,11 +1,11 @@
-import 'expose-loader?jQuery!expose-loader?$!jquery';
-import 'expose-loader?moment!moment';
-import Vue from 'vue'
-import Vuex from 'vuex'
-import VueI18N from 'vue-i18n'
-import VueResource from 'vue-resource'
-import * as translations from './translations';
-import 'moment-timezone';
+import "expose-loader?jQuery!expose-loader?$!jquery";
+import "expose-loader?moment!moment";
+import Vue from "vue";
+import Vuex from "vuex";
+import VueI18N from "vue-i18n";
+import VueResource from "vue-resource";
+import * as translations from "./translations";
+import "moment-timezone";
 
 Vue.use(Vuex);
 Vue.use(VueI18N);

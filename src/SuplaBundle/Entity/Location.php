@@ -19,11 +19,9 @@
 
 namespace SuplaBundle\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints\DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
-use SuplaBundle\Entity\User;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -37,21 +35,21 @@ class Location {
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @ORM\Column(name="password", type="string", length=32, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Length(min=4, max=10)
      */
     private $password;
-    
+
     /**
      * @ORM\Column(name="caption", type="string", length=100, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Length(min=1, max=100)
      */
     private $caption;
-    
+
     /**
      * @ORM\Column(name="enabled", type="boolean", nullable=false)
      */
@@ -62,7 +60,7 @@ class Location {
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="AccessID", inversedBy="locations", cascade={"persist"})
      * @ORM\JoinTable(name="supla_rel_aidloc",
@@ -71,24 +69,24 @@ class Location {
      * )
      */
     private $accessIds;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="IODevice", mappedBy="location")
      **/
     private $ioDevices;
-    
+
     public function __construct(User $user) {
-        
+
         $this->enabled = true;
         $this->accessIds = new ArrayCollection();
         $this->ioDevices = new ArrayCollection();
-        
+
         if ($user !== null) {
             $this->user = $user;
-           
+
             if ($user->getAccessIDS()->count() > 0) {
                 $aid = $user->getAccessIDS()->get(0);
-              
+
                 if ($aid !== null) {
                     $this->accessIds->add($aid);
                     $aid->getLocations()->add($this);
@@ -97,43 +95,43 @@ class Location {
             }
         }
     }
-    
+
     public function getCaption() {
         return $this->caption;
     }
-    
+
     public function setCaption($caption) {
         $this->caption = $caption;
     }
-    
+
     public function getPassword() {
         return $this->password;
     }
-    
+
     public function setPassword($password) {
         $this->password = $password;
     }
-    
+
     public function getUser() {
         return $this->user;
     }
-    
+
     public function getId() {
         return $this->id;
     }
-    
+
     public function getIoDevices() {
         return $this->ioDevices;
     }
-    
+
     public function getAccessIds() {
         return $this->accessIds;
     }
-    
+
     public function getEnabled() {
         return $this->enabled;
     }
-    
+
     public function setEnabled($enabled) {
         $this->enabled = $enabled;
     }

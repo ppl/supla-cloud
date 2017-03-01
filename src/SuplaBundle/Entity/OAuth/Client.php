@@ -19,9 +19,8 @@
 
 namespace SuplaBundle\Entity\OAuth;
 
-use FOS\OAuthServerBundle\Entity\Client as BaseClient;
 use Doctrine\ORM\Mapping as ORM;
-use SuplaBundle\Entity\OAuth\User as OAuthUser;
+use FOS\OAuthServerBundle\Entity\Client as BaseClient;
 use SuplaBundle\Entity\User as ParentUser;
 
 /**
@@ -36,42 +35,42 @@ class Client extends BaseClient {
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-    
+
     /**
      * @ORM\Column(name="type", type="integer")
      */
     protected $type;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="SuplaBundle\Entity\User")
      */
     protected $parent;
-    
+
     private function pwdGen() {
         return base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
     }
-    
+
     public function __construct() {
         parent::__construct();
         $this->type = 0;
     }
-        
+
     public function getGrantType() {
         return implode(', ', $this->getAllowedGrantTypes());
     }
-    
+
     public function setType($type) {
         $this->type = $type;
     }
-    
+
     public function getType() {
         return $this->type;
     }
-    
+
     public function getParentUser() {
         return $this->parent;
     }
-    
+
     public function setParent(ParentUser $parent) {
         $this->parent = $parent;
     }

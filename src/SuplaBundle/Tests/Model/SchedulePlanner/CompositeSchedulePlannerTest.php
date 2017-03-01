@@ -1,7 +1,6 @@
 <?php
 namespace SuplaBundle\Tests\Model\SchedulePlanner;
 
-use SuplaBundle\Entity\Schedule;
 use SuplaBundle\Model\SchedulePlanners\CompositeSchedulePlanner;
 use SuplaBundle\Model\SchedulePlanners\CronExpressionSchedulePlanner;
 

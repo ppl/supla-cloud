@@ -8,8 +8,9 @@
                 </h1>
                 <div class="row">
                     <div class="col-md-6">
-                        <img class='pull-right' height="120"
-                             src='{{ asset('assets/img/functions/') }}{{ schedule.channel.function }}.svg'>
+                        <img class='pull-right'
+                                height="120"
+                                src='{{ asset('assets/img/functions/') }}{{ schedule.channel.function }}.svg'>
                         <h4>{{ 'Action'|trans }}</h4>
                         {{ schedule.action|functionActionToString }}
 
@@ -33,22 +34,26 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group text-right">
-                            <form action="" method="post">
+                            <form action=""
+                                    method="post">
                                 <div class="btn-group">
                                     {% if schedule.enabled %}
-                                        <button class="btn btn-default" name="disable">
+                                        <button class="btn btn-default"
+                                                name="disable">
                                             {% trans %}Disable schedule{% endtrans %}
                                         </button>
                                     {% else %}
-                                        <button class="btn btn-success" name="enable">
+                                        <button class="btn btn-success"
+                                                name="enable">
                                             {% trans %}Enable schedule{% endtrans %}
                                         </button>
                                     {% endif %}
                                     <a class="btn btn-default"
-                                       href="{{ path('_schedule_edit', {'schedule': schedule.id}) }}">
+                                            href="{{ path('_schedule_edit', {'schedule': schedule.id}) }}">
                                         {% trans %}Edit schedule{% endtrans %}
                                     </a>
-                                    <button class="btn btn-danger" name="delete"
+                                    <button class="btn btn-danger"
+                                            name="delete"
                                             onclick="return confirm('{% trans %}Are you sure you want to delete the schedule?{% endtrans %}')">
                                         {% trans %}Delete schedule{% endtrans %}
                                     </button>

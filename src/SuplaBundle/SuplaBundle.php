@@ -19,11 +19,10 @@
 
 namespace SuplaBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Doctrine\DBAL\Types\Type;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SuplaBundle extends Bundle {
-
     public function boot() {
         if (!Type::hasType('binary')) {
             Type::addType('binary', 'SuplaBundle\Doctrine\Types\BinaryType');

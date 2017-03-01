@@ -19,32 +19,26 @@
 
 namespace SuplaBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\Extension\Core\DataTransformer\DataTransformerChain;
-use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToArrayTransformer;
-use Symfony\Component\Form\Extension\Core\DataTransformer\ArrayToPartsTransformer;
-use Symfony\Component\Form\FormBuilderInterface;
 use SuplaBundle\Model\IODeviceManager;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ChannelFunctionType extends AbstractType {
 
-    
     private $dev_miodevice_manager;
-    
+
     public function __construct(IODeviceManager $iodevice_manager) {
         $this->iodevice_manager = $iodevice_manager;
     }
-    
 
     public function configureOptions(OptionsResolver $resolver) {
-        $resolver->setDefaults(array(
-                'data_class' => 'SuplaBundle\Entity\IODeviceChannel',
-            ));
+        $resolver->setDefaults([
+            'data_class' => 'SuplaBundle\Entity\IODeviceChannel',
+        ]);
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
@@ -55,24 +49,23 @@ class ChannelFunctionType extends AbstractType {
 
     public function buildView(FormView $view, FormInterface $form, array $options) {
         $channel = $view->vars['value'];
-        
+
         $view->vars['selected'] = $this->iodevice_manager->channelFunctionToString($channel->getFunction());
-        
+
         $map = $this->iodevice_manager->channelFunctionMap($channel->getType(), $channel->getFuncList());
-        $fnc = array();
-        
+        $fnc = [];
+
         foreach ($map as $f) {
-            $fnc[] = array('id' => $f,
-                           'name' => $this->iodevice_manager->channelFunctionToString($f)
-            );
+            $fnc[] = ['id' => $f,
+                'name' => $this->iodevice_manager->channelFunctionToString($f),
+            ];
         }
-    
+
         $view->vars['channel'] = $channel;
         $view->vars['functions'] = $fnc;
         $view->vars['function_params'] = $this->iodevice_manager->channelFunctionParamsHtmlTemplate($channel);
     }
 
-    
     public function getBlockPrefix() {
         return 'channelfunction';
     }

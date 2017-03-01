@@ -4,7 +4,9 @@
             <div class="form-group">
                 <label>{{ $t('Start date') }}</label>
                 <div class="input-group date">
-                    <input type="text" class="form-control datetimepicker-start" ref="startDatePicker">
+                    <input type="text"
+                        class="form-control datetimepicker-start"
+                        ref="startDatePicker">
                     <div class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </div>
@@ -15,7 +17,9 @@
             <div class="form-group">
                 <label>{{ $t('End date') }}</label>
                 <div class="input-group date">
-                    <input type="text" class="form-control datetimepicker-end" ref="endDatePicker">
+                    <input type="text"
+                        class="form-control datetimepicker-end"
+                        ref="endDatePicker">
                     <div class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </div>

@@ -1,7 +1,6 @@
 <?php
 namespace SuplaBundle\Model\SchedulePlanners;
 
-use Cron\CronExpression;
 use SensioLabs\Security\Exception\RuntimeException;
 use SuplaBundle\Entity\Schedule;
 

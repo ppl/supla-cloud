@@ -20,26 +20,17 @@
 namespace SuplaBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use SuplaBundle\Entity\IODeviceChannel;
+use SuplaBundle\Form\Model\ChangePassword;
+use SuplaBundle\Form\Model\Registration;
+use SuplaBundle\Form\Model\ResetPassword;
+use SuplaBundle\Form\Type\RegistrationType;
+use SuplaBundle\Form\Type\ResetPasswordType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-
-use SuplaBundle\Form\Type\ChangePasswordType;
-use SuplaBundle\Form\Type\ResetPasswordType;
-use SuplaBundle\Form\Type\RegistrationType;
-use SuplaBundle\Form\Type\ForgotPasswordType;
-use SuplaBundle\Form\Model\Registration;
-use SuplaBundle\Form\Model\ChangePassword;
-use SuplaBundle\Form\Model\ResetPassword;
-use SuplaBundle\Form\Model\ForgotPassword;
-use Symfony\Component\Form\FormError;
-use SuplaBundle\Entity\User;
-use SuplaBundle\Model\UserManager;
-use SuplaBundle\Supla\ServerList;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -47,22 +38,21 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class AccountController extends Controller {
 
-
     /**
      * @Route("/register", name="_account_register")
      */
     public function registerAction(Request $request) {
         $registration = new Registration();
-        $form = $this->createForm(RegistrationType::class, $registration, array(
+        $form = $this->createForm(RegistrationType::class, $registration, [
             'action' => $this->generateUrl('_account_create_here'),
-            'validation_groups' => array('_registration')
-        ));
+            'validation_groups' => ['_registration'],
+        ]);
 
         return $this->render(
             'SuplaBundle:Account:register.html.twig',
-            array('form' => $form->createView(),
-                'locale' => $request->getLocale()
-            )
+            ['form' => $form->createView(),
+                'locale' => $request->getLocale(),
+            ]
         );
     }
 
@@ -79,7 +69,7 @@ class AccountController extends Controller {
 
         return $this->render(
             'SuplaBundle:Account:checkemail.html.twig',
-            array('email' => $email)
+            ['email' => $email]
         );
     }
 
@@ -93,21 +83,20 @@ class AccountController extends Controller {
             $mailer = $this->get('supla_mailer');
             $mailer->sendActivationEmailMessage($user);
 
-            $this->get('session')->getFlashBag()->add('success', array('title' => 'Success', 'message' => 'Account has been activated. You can Sign In now.'));
+            $this->get('session')->getFlashBag()->add('success', ['title' => 'Success', 'message' => 'Account has been activated. You can Sign In now.']);
         } else {
-            $this->get('session')->getFlashBag()->add('error', array('title' => 'Error', 'message' => 'Token does not exist'));
+            $this->get('session')->getFlashBag()->add('error', ['title' => 'Error', 'message' => 'Token does not exist']);
         }
 
         return $this->redirectToRoute("_auth_login");
     }
-
 
     /**
      * @Route("/create_here", name="_account_create_here")
      */
     public function createActionHere(Request $request) {
 
-        $form = $this->createForm(RegistrationType::class, new Registration(), array('language' => $request->getLocale()));
+        $form = $this->createForm(RegistrationType::class, new Registration(), ['language' => $request->getLocale()]);
 
         $form->handleRequest($request);
 
@@ -129,12 +118,11 @@ class AccountController extends Controller {
             $exists = false;
         }
 
-
         if ($exists === null) {
             return $this->redirectToRoute("_temp_unavailable");
         } elseif ($exists === true) {
             $translator = $this->get('translator');
-            $form->get('user')->get('email')->addError(new FormError($translator->trans('Email already exists', array(), 'validators')));
+            $form->get('user')->get('email')->addError(new FormError($translator->trans('Email already exists', [], 'validators')));
         }
 
         if ($exists === false
@@ -153,12 +141,11 @@ class AccountController extends Controller {
             return $this->redirectToRoute("_account_checkemail");
         }
 
-
         return $this->render(
             'SuplaBundle:Account:register.html.twig',
-            array('form_ca' => $form->createView(),
-                'locale' => $request->getLocale()
-            )
+            ['form_ca' => $form->createView(),
+                'locale' => $request->getLocale(),
+            ]
         );
     }
 
@@ -166,7 +153,7 @@ class AccountController extends Controller {
      * @Route("/create_here/{locale}", name="_account_create_here_lc")
      */
     public function createActionHereLC(Request $request, $locale) {
-        if (in_array(@$locale, array('en', 'pl', 'de', 'ru'))) {
+        if (in_array(@$locale, ['en', 'pl', 'de', 'ru'])) {
             $request->getSession()->set('_locale', $locale);
             $request->setLocale($locale);
         }
@@ -190,8 +177,8 @@ class AccountController extends Controller {
 
         return $this->render(
             'SuplaBundle:Account:view.html.twig',
-            array('user' => $user
-            )
+            ['user' => $user,
+            ]
         );
     }
 
@@ -213,18 +200,18 @@ class AccountController extends Controller {
                 $user->setToken(null);
                 $user->setPasswordRequestedAt(null);
                 $user_manager->setPassword($form->getData()->getNewPassword(), $user, true);
-                $this->get('session')->getFlashBag()->add('success', array('title' => 'Success', 'message' => 'Password has been changed!'));
+                $this->get('session')->getFlashBag()->add('success', ['title' => 'Success', 'message' => 'Password has been changed!']);
 
                 return $this->redirectToRoute("_auth_login");
             }
 
             return $this->render(
                 'SuplaBundle:Account:resetpassword.html.twig',
-                array('form' => $form->createView(),
-                )
+                ['form' => $form->createView(),
+                ]
             );
         } else {
-            $this->get('session')->getFlashBag()->add('error', array('title' => 'Error', 'message' => 'Token does not exist'));
+            $this->get('session')->getFlashBag()->add('error', ['title' => 'Error', 'message' => 'Token does not exist']);
         }
 
         return $this->redirectToRoute("_auth_login");
@@ -238,8 +225,8 @@ class AccountController extends Controller {
 
         return $this->render(
             'SuplaBundle:Account:api.html.twig',
-            array('user' => $user
-            )
+            ['user' => $user,
+            ]
         );
     }
 
@@ -259,14 +246,13 @@ class AccountController extends Controller {
         $errors = $validator->validate($cp);
 
         if (count($errors) > 0) {
-            $result = array('flash' => array('title' => $translator->trans('Error'),
+            $result = ['flash' => ['title' => $translator->trans('Error'),
                 'message' => $translator->trans($errors[0]->getMessage()),
-                'type' => 'error')
-            );
+                'type' => 'error'],
+            ];
 
             return AjaxController::jsonResponse(false, $result);
         };
-
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
@@ -284,11 +270,10 @@ class AccountController extends Controller {
 
         $data = json_decode($request->getContent());
 
-        if (in_array(@$data->locale, array('en', 'pl', 'de', 'ru'))) {
+        if (in_array(@$data->locale, ['en', 'pl', 'de', 'ru'])) {
             $request->getSession()->set('_locale', $data->locale);
             $request->setLocale($data->locale);
         }
-
 
         if (preg_match('/@/', @$data->email)
             && null !== ($user = $user = $user_manager->userByEmail($data->email))
@@ -297,7 +282,6 @@ class AccountController extends Controller {
             $mailer = $this->get('supla_mailer');
             $mailer->sendResetPasswordEmailMessage($user);
         }
-
 
         return AjaxController::jsonResponse(true, null);
     }
@@ -313,15 +297,13 @@ class AccountController extends Controller {
             $sl = $this->get('server_list');
             $server = $sl->getAuthServerForUser($request, $username);
 
-
             if (strlen(@$server) > 0) {
-                AjaxController::remoteRequest('https://' . $server . $this->generateUrl('_account_ajax_forgot_passwd_here'), array('email' => $username, 'locale' => $request->getLocale()));
+                AjaxController::remoteRequest('https://' . $server . $this->generateUrl('_account_ajax_forgot_passwd_here'), ['email' => $username, 'locale' => $request->getLocale()]);
             }
         }
 
         return AjaxController::jsonResponse(true, null);
     }
-
 
     /**
      * @Route("/ajax/user_exists", name="_account_ajax_user_exists")
@@ -339,7 +321,7 @@ class AccountController extends Controller {
             $exists = $user !== null ? true : false;
         };
 
-        return AjaxController::jsonResponse($exists !== null, array('exists' => $exists));
+        return AjaxController::jsonResponse($exists !== null, ['exists' => $exists]);
     }
 
     /**
@@ -383,8 +365,8 @@ class AccountController extends Controller {
                         'location' => [
                             'id' => $channel->getIoDevice()->getLocation()->getId(),
                             'caption' => $channel->getIoDevice()->getLocation()->getCaption(),
-                        ]
-                    ]
+                        ],
+                    ],
                 ];
             }, $schedulableChannels),
             'actionStringMap' => $ioDeviceManager->actionStringMap(),
